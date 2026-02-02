@@ -342,6 +342,20 @@ $router->get('/training/architecture', 'TrainingController@architecture', ['auth
 $router->get('/training/architecture/download', 'TrainingController@downloadArchitecture', ['auth']);
 
 // =====================================================
+// MAYORAL LEKGOTLA ROUTES
+// =====================================================
+$router->get('/lekgotla', 'LekgotlaController@index', ['auth']);
+$router->get('/lekgotla/comparison', 'LekgotlaController@comparison', ['auth']);
+$router->get('/lekgotla/create', 'LekgotlaController@create', ['auth', 'manager']);
+$router->post('/lekgotla/store', 'LekgotlaController@store', ['auth', 'manager', 'csrf']);
+$router->get('/lekgotla/export', 'LekgotlaController@exportComparison', ['auth']);
+$router->get('/lekgotla/session/{id}', 'LekgotlaController@session', ['auth']);
+$router->get('/lekgotla/session/{id}/add-change', 'LekgotlaController@addChange', ['auth', 'manager']);
+$router->post('/lekgotla/session/{id}/store-change', 'LekgotlaController@storeChange', ['auth', 'manager', 'csrf']);
+$router->post('/lekgotla/session/{id}/approve', 'LekgotlaController@approveSession', ['auth', 'admin', 'csrf']);
+$router->post('/lekgotla/change/{id}/review', 'LekgotlaController@reviewChange', ['auth', 'manager', 'csrf']);
+
+// =====================================================
 // API ROUTES
 // =====================================================
 $router->get('/api/directorates', 'APIController@directorates', ['auth']);

@@ -107,6 +107,17 @@ define('MENU_ITEMS', [
             ['label' => 'Action Items', 'url' => '/imbizo/action-items']
         ]
     ],
+    'lekgotla' => [
+        'label' => 'Mayoral Lekgotla',
+        'icon' => 'bi-diagram-2',
+        'url' => '/lekgotla',
+        'roles' => ['admin', 'director', 'manager'],
+        'submenu' => [
+            ['label' => 'Sessions', 'url' => '/lekgotla'],
+            ['label' => 'Priority Comparison', 'url' => '/lekgotla/comparison'],
+            ['label' => 'Create Session', 'url' => '/lekgotla/create']
+        ]
+    ],
     'sdbip' => [
         'label' => 'SDBIP',
         'icon' => 'bi-graph-up',
