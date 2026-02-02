@@ -95,11 +95,10 @@ class LekgotlaController
 
         // Get linked Imbizo sessions for reference
         $imbizoSessions = $this->db->query("
-            SELECT id, session_title, session_date
+            SELECT id, title as session_title, session_date
             FROM imbizo_sessions
-            WHERE financial_year_id = ?
             ORDER BY session_date DESC
-        ", [$financialYearId])->fetchAll();
+        ")->fetchAll();
 
         // Budget summary by category
         $budgetByCategory = $this->db->query("
@@ -134,11 +133,10 @@ class LekgotlaController
 
         // Get available Imbizo sessions to link
         $imbizoSessions = $this->db->query("
-            SELECT id, session_title, session_date, venue
+            SELECT id, title as session_title, session_date, venue
             FROM imbizo_sessions
-            WHERE financial_year_id = ?
             ORDER BY session_date DESC
-        ", [$financialYearId])->fetchAll();
+        ")->fetchAll();
 
         view('lekgotla.create', [
             'imbizoSessions' => $imbizoSessions,
@@ -187,7 +185,7 @@ class LekgotlaController
     {
         $session = $this->db->query("
             SELECT ls.*, fy.year_label,
-                   ims.session_title as imbizo_title, ims.session_date as imbizo_date,
+                   ims.title as imbizo_title, ims.session_date as imbizo_date,
                    u.full_name as created_by_name
             FROM lekgotla_sessions ls
             JOIN financial_years fy ON ls.financial_year_id = fy.id

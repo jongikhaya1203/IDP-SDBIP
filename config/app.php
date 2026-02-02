@@ -276,6 +276,37 @@ function can_access_directorate(int $directorateId): bool {
     return $user['directorate_id'] == $directorateId;
 }
 
+function cms_settings(): array {
+    static $settings = null;
+
+    if ($settings !== null) {
+        return $settings;
+    }
+
+    $configFile = ROOT_PATH . '/config/cms_settings.json';
+
+    $defaults = [
+        'site_name' => 'SDBIP & IDP Management',
+        'site_tagline' => 'Municipal Performance Management System',
+        'dashboard_title' => 'Performance Dashboard',
+        'organization_name' => defined('MUNICIPALITY_NAME') ? MUNICIPALITY_NAME : 'Sample Municipality',
+        'logo' => '',
+        'favicon' => '',
+        'footer_text' => '© ' . date('Y') . ' Municipal SDBIP & IDP System. All rights reserved.',
+        'primary_color' => '#2563eb',
+        'secondary_color' => '#64748b'
+    ];
+
+    if (file_exists($configFile)) {
+        $saved = json_decode(file_get_contents($configFile), true);
+        $settings = array_merge($defaults, $saved ?? []);
+    } else {
+        $settings = $defaults;
+    }
+
+    return $settings;
+}
+
 // Autoloader for classes
 spl_autoload_register(function ($class) {
     $paths = [

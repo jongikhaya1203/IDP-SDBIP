@@ -1,10 +1,14 @@
+<?php $cmsSettings = cms_settings(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= csrf_token() ?>">
-    <title><?= e($title ?? 'Dashboard') ?> - <?= APP_NAME ?></title>
+    <title><?= e($title ?? 'Dashboard') ?> - <?= e($cmsSettings['site_name']) ?></title>
+    <?php if (!empty($cmsSettings['favicon'])): ?>
+    <link rel="icon" type="image/x-icon" href="<?= e($cmsSettings['favicon']) ?>">
+    <?php endif; ?>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,8 +21,8 @@
 
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #64748b;
+            --primary-color: <?= e($cmsSettings['primary_color']) ?>;
+            --secondary-color: <?= e($cmsSettings['secondary_color']) ?>;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
@@ -377,8 +381,17 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h5><i class="bi bi-building me-2"></i><?= MUNICIPALITY_NAME ?></h5>
-            <small>SDBIP & IDP Management</small>
+            <div class="d-flex align-items-center">
+                <?php if (!empty($cmsSettings['logo'])): ?>
+                    <img src="<?= e($cmsSettings['logo']) ?>" alt="Logo" class="me-2" style="max-height: 40px; max-width: 60px;">
+                <?php else: ?>
+                    <i class="bi bi-building me-2" style="font-size: 1.5rem;"></i>
+                <?php endif; ?>
+                <div>
+                    <h5 class="mb-0"><?= e($cmsSettings['organization_name'] ?: MUNICIPALITY_NAME) ?></h5>
+                    <small><?= e($cmsSettings['site_tagline']) ?></small>
+                </div>
+            </div>
         </div>
 
         <ul class="sidebar-nav nav flex-column">

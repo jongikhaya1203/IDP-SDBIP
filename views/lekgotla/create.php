@@ -1,3 +1,12 @@
+<?php
+$title = 'Create Lekgotla Session';
+$breadcrumbs = [
+    ['label' => 'Lekgotla', 'url' => '/lekgotla'],
+    ['label' => 'Create Session']
+];
+ob_start();
+?>
+
 <div class="container-fluid py-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -70,3 +79,7 @@
         </div>
     </div>
 </div>
+
+<?php
+$content = ob_get_clean();
+include VIEWS_PATH . '/layouts/main.php';

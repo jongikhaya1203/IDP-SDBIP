@@ -1,3 +1,13 @@
+<?php
+$title = 'Add Priority Change';
+$breadcrumbs = [
+    ['label' => 'Lekgotla', 'url' => '/lekgotla'],
+    ['label' => $session['session_name'], 'url' => '/lekgotla/session/' . $session['id']],
+    ['label' => 'Add Change']
+];
+ob_start();
+?>
+
 <div class="container-fluid py-4">
     <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -236,3 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<?php
+$content = ob_get_clean();
+include VIEWS_PATH . '/layouts/main.php';

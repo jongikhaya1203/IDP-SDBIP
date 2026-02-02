@@ -3,6 +3,8 @@
 -- Manages priority changes based on Mayoral Imbizo commitments
 -- =============================================================================
 
+USE sdbip_idp;
+
 -- -----------------------------------------------------------------------------
 -- Lekgotla Sessions Table
 -- -----------------------------------------------------------------------------
@@ -177,8 +179,8 @@ CREATE TABLE IF NOT EXISTS lekgotla_priority_changes (
 -- Lekgotla Resolutions
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS lekgotla_resolutions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    lekgotla_session_id INT NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    lekgotla_session_id INT UNSIGNED NOT NULL,
     resolution_number VARCHAR(50) NOT NULL,
     resolution_title VARCHAR(255) NOT NULL,
     resolution_text TEXT NOT NULL,
@@ -189,8 +191,8 @@ CREATE TABLE IF NOT EXISTS lekgotla_resolutions (
 
     -- Implementation
     implementation_deadline DATE,
-    responsible_directorate_id INT,
-    responsible_user_id INT,
+    responsible_directorate_id INT UNSIGNED,
+    responsible_user_id INT UNSIGNED,
     implementation_status ENUM('pending', 'in_progress', 'completed', 'overdue') DEFAULT 'pending',
     implementation_notes TEXT,
 
@@ -202,20 +204,20 @@ CREATE TABLE IF NOT EXISTS lekgotla_resolutions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (lekgotla_session_id) REFERENCES lekgotla_sessions(id),
-    FOREIGN KEY (responsible_directorate_id) REFERENCES directorates(id),
-    FOREIGN KEY (responsible_user_id) REFERENCES users(id)
+    FOREIGN KEY (lekgotla_session_id) REFERENCES lekgotla_sessions(id) ON DELETE CASCADE,
+    FOREIGN KEY (responsible_directorate_id) REFERENCES directorates(id) ON DELETE SET NULL,
+    FOREIGN KEY (responsible_user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- -----------------------------------------------------------------------------
 -- Priority Comparison Snapshots (For historical comparison)
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS priority_snapshots (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    financial_year_id INT NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    financial_year_id INT UNSIGNED NOT NULL,
     snapshot_date DATE NOT NULL,
     snapshot_type ENUM('beginning_of_year', 'pre_lekgotla', 'post_lekgotla', 'quarterly', 'year_end') NOT NULL,
-    lekgotla_session_id INT NULL,
+    lekgotla_session_id INT UNSIGNED NULL,
 
     -- Snapshot data (JSON for flexibility)
     priorities_data JSON,
@@ -229,12 +231,12 @@ CREATE TABLE IF NOT EXISTS priority_snapshots (
     completed_count INT DEFAULT 0,
     discarded_count INT DEFAULT 0,
 
-    created_by INT,
+    created_by INT UNSIGNED,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (financial_year_id) REFERENCES financial_years(id),
-    FOREIGN KEY (lekgotla_session_id) REFERENCES lekgotla_sessions(id),
-    FOREIGN KEY (created_by) REFERENCES users(id)
+    FOREIGN KEY (lekgotla_session_id) REFERENCES lekgotla_sessions(id) ON DELETE SET NULL,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- -----------------------------------------------------------------------------

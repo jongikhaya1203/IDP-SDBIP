@@ -1,13 +1,16 @@
+<?php
+$title = htmlspecialchars($session['session_name']);
+$breadcrumbs = [
+    ['label' => 'Lekgotla', 'url' => '/lekgotla'],
+    ['label' => $session['session_name']]
+];
+ob_start();
+?>
+
 <div class="container-fluid py-4">
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-1">
-                    <li class="breadcrumb-item"><a href="/lekgotla">Lekgotla</a></li>
-                    <li class="breadcrumb-item active"><?= htmlspecialchars($session['session_name']) ?></li>
-                </ol>
-            </nav>
             <h1 class="h3 mb-1"><?= htmlspecialchars($session['session_name']) ?></h1>
             <p class="text-muted mb-0">
                 <i class="bi bi-calendar me-1"></i><?= date('d F Y', strtotime($session['session_date'])) ?>
@@ -342,3 +345,7 @@
 <style>
 .border-4 { border-width: 4px !important; }
 </style>
+
+<?php
+$content = ob_get_clean();
+include VIEWS_PATH . '/layouts/main.php';

@@ -1,3 +1,12 @@
+<?php
+$title = 'Priority Comparison';
+$breadcrumbs = [
+    ['label' => 'Lekgotla', 'url' => '/lekgotla'],
+    ['label' => 'Comparison']
+];
+ob_start();
+?>
+
 <div class="container-fluid py-4">
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -387,3 +396,7 @@
     border-width: 4px !important;
 }
 </style>
+
+<?php
+$content = ob_get_clean();
+include VIEWS_PATH . '/layouts/main.php';

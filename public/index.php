@@ -311,6 +311,9 @@ $router->get('/cpanel/integrations', 'CpanelController@integrations', ['auth', '
 $router->get('/cpanel/backup', 'CpanelController@backup', ['auth', 'admin']);
 $router->post('/cpanel/backup', 'CpanelController@createBackup', ['auth', 'admin', 'csrf']);
 $router->get('/cpanel/logs', 'CpanelController@logs', ['auth', 'admin']);
+$router->get('/cpanel/cms', 'CpanelController@cms', ['auth', 'admin']);
+$router->post('/cpanel/cms/update', 'CpanelController@updateCms', ['auth', 'admin', 'csrf']);
+$router->get('/cpanel/cms/remove-logo', 'CpanelController@removeLogo', ['auth', 'admin']);
 
 // =====================================================
 // MAYORAL IDP IMBIZO ROUTES

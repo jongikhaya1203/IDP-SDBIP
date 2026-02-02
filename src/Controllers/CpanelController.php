@@ -107,6 +107,142 @@ class CpanelController {
         redirect('/cpanel/backup');
     }
 
+    public function cms(): void {
+        // Load current CMS settings
+        $settings = $this->getCmsSettings();
+
+        $data = [
+            'title' => 'CMS Portal',
+            'settings' => $settings
+        ];
+
+        view('cpanel.cms', $data);
+    }
+
+    public function updateCms(): void {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('/cpanel/cms');
+            return;
+        }
+
+        $settings = $this->getCmsSettings();
+
+        // Handle logo upload
+        if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = PUBLIC_PATH . '/uploads/cms/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $fileExt = strtolower(pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION));
+            $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'];
+
+            if (in_array($fileExt, $allowedExts)) {
+                // Delete old logo if exists
+                if (!empty($settings['logo']) && file_exists(PUBLIC_PATH . $settings['logo'])) {
+                    unlink(PUBLIC_PATH . $settings['logo']);
+                }
+
+                $fileName = 'logo_' . time() . '.' . $fileExt;
+                $filePath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($_FILES['logo']['tmp_name'], $filePath)) {
+                    $settings['logo'] = '/uploads/cms/' . $fileName;
+                }
+            } else {
+                flash('error', 'Invalid file type. Allowed: JPG, PNG, GIF, SVG, WEBP');
+                redirect('/cpanel/cms');
+                return;
+            }
+        }
+
+        // Handle favicon upload
+        if (isset($_FILES['favicon']) && $_FILES['favicon']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = PUBLIC_PATH . '/uploads/cms/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $fileExt = strtolower(pathinfo($_FILES['favicon']['name'], PATHINFO_EXTENSION));
+            $allowedExts = ['ico', 'png', 'svg'];
+
+            if (in_array($fileExt, $allowedExts)) {
+                if (!empty($settings['favicon']) && file_exists(PUBLIC_PATH . $settings['favicon'])) {
+                    unlink(PUBLIC_PATH . $settings['favicon']);
+                }
+
+                $fileName = 'favicon_' . time() . '.' . $fileExt;
+                $filePath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($_FILES['favicon']['tmp_name'], $filePath)) {
+                    $settings['favicon'] = '/uploads/cms/' . $fileName;
+                }
+            }
+        }
+
+        // Update text settings
+        $settings['site_name'] = $_POST['site_name'] ?? $settings['site_name'];
+        $settings['site_tagline'] = $_POST['site_tagline'] ?? $settings['site_tagline'];
+        $settings['dashboard_title'] = $_POST['dashboard_title'] ?? $settings['dashboard_title'];
+        $settings['organization_name'] = $_POST['organization_name'] ?? $settings['organization_name'];
+        $settings['footer_text'] = $_POST['footer_text'] ?? $settings['footer_text'];
+        $settings['primary_color'] = $_POST['primary_color'] ?? $settings['primary_color'];
+        $settings['secondary_color'] = $_POST['secondary_color'] ?? $settings['secondary_color'];
+
+        // Save settings
+        $this->saveCmsSettings($settings);
+
+        flash('success', 'CMS settings updated successfully.');
+        redirect('/cpanel/cms');
+    }
+
+    public function removeLogo(): void {
+        $settings = $this->getCmsSettings();
+
+        if (!empty($settings['logo']) && file_exists(PUBLIC_PATH . $settings['logo'])) {
+            unlink(PUBLIC_PATH . $settings['logo']);
+        }
+
+        $settings['logo'] = '';
+        $this->saveCmsSettings($settings);
+
+        flash('success', 'Logo removed successfully.');
+        redirect('/cpanel/cms');
+    }
+
+    private function getCmsSettings(): array {
+        $configFile = ROOT_PATH . '/config/cms_settings.json';
+
+        $defaults = [
+            'site_name' => 'SDBIP & IDP Management',
+            'site_tagline' => 'Municipal Performance Management System',
+            'dashboard_title' => 'Performance Dashboard',
+            'organization_name' => defined('MUNICIPALITY_NAME') ? MUNICIPALITY_NAME : 'Sample Municipality',
+            'logo' => '',
+            'favicon' => '',
+            'footer_text' => '© ' . date('Y') . ' Municipal SDBIP & IDP System. All rights reserved.',
+            'primary_color' => '#2563eb',
+            'secondary_color' => '#64748b'
+        ];
+
+        if (file_exists($configFile)) {
+            $saved = json_decode(file_get_contents($configFile), true);
+            return array_merge($defaults, $saved ?? []);
+        }
+
+        return $defaults;
+    }
+
+    private function saveCmsSettings(array $settings): void {
+        $configDir = ROOT_PATH . '/config';
+        if (!is_dir($configDir)) {
+            mkdir($configDir, 0755, true);
+        }
+
+        $configFile = $configDir . '/cms_settings.json';
+        file_put_contents($configFile, json_encode($settings, JSON_PRETTY_PRINT));
+    }
+
     public function integrations(): void {
         $openaiKey = defined('OPENAI_API_KEY') ? OPENAI_API_KEY : '';
         $ldapEnabled = defined('LDAP_ENABLED') ? LDAP_ENABLED : false;

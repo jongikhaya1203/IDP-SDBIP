@@ -77,28 +77,40 @@ ob_start();
             </div>
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-md-3">
+                    <div class="col-md-4 col-lg-2">
+                        <a href="<?= url('/cpanel/cms') ?>" class="btn btn-outline-purple w-100 py-3" style="border-color: #8b5cf6; color: #8b5cf6;">
+                            <i class="bi bi-palette d-block mb-1" style="font-size: 1.5rem;"></i>
+                            CMS Portal
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-2">
                         <a href="<?= url('/cpanel/modules') ?>" class="btn btn-outline-primary w-100 py-3">
                             <i class="bi bi-puzzle d-block mb-1" style="font-size: 1.5rem;"></i>
-                            Module Configuration
+                            Modules
                         </a>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4 col-lg-2">
                         <a href="<?= url('/cpanel/database') ?>" class="btn btn-outline-info w-100 py-3">
                             <i class="bi bi-database d-block mb-1" style="font-size: 1.5rem;"></i>
-                            Database Management
+                            Database
                         </a>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4 col-lg-2">
                         <a href="<?= url('/cpanel/integrations') ?>" class="btn btn-outline-success w-100 py-3">
                             <i class="bi bi-plug d-block mb-1" style="font-size: 1.5rem;"></i>
                             Integrations
                         </a>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4 col-lg-2">
                         <a href="<?= url('/cpanel/backup') ?>" class="btn btn-outline-warning w-100 py-3">
                             <i class="bi bi-cloud-arrow-up d-block mb-1" style="font-size: 1.5rem;"></i>
-                            Backup & Restore
+                            Backup
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-2">
+                        <a href="<?= url('/cpanel/logs') ?>" class="btn btn-outline-secondary w-100 py-3">
+                            <i class="bi bi-journal-text d-block mb-1" style="font-size: 1.5rem;"></i>
+                            Audit Logs
                         </a>
                     </div>
                 </div>
