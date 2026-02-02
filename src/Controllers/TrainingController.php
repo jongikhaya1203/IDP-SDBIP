@@ -94,7 +94,7 @@ class TrainingController {
     }
 
     public function downloadArchitecture(): void {
-        $file = BASE_PATH . '/docs/CLOUD_ARCHITECTURE_REVIEW.md';
+        $file = PUBLIC_PATH . '/docs/Cloud_Architecture_Review.html';
 
         if (!file_exists($file)) {
             http_response_code(404);
@@ -102,8 +102,8 @@ class TrainingController {
             return;
         }
 
-        header('Content-Type: text/markdown');
-        header('Content-Disposition: attachment; filename="CLOUD_ARCHITECTURE_REVIEW.md"');
+        header('Content-Type: text/html');
+        header('Content-Disposition: attachment; filename="Cloud_Architecture_Review.html"');
         header('Content-Length: ' . filesize($file));
         readfile($file);
         exit;
