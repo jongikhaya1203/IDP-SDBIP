@@ -55,6 +55,57 @@ ob_start();
     </div>
 </div>
 
+<!-- Documentation Library -->
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>Documentation Library</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3 mb-3 mb-md-0">
+                <a href="/docs/Training_Manual.html" target="_blank" class="card h-100 text-decoration-none border-primary hover-shadow">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-mortarboard text-primary" style="font-size: 2.5rem;"></i>
+                        <h5 class="mt-3 mb-1 text-dark">Training Manual</h5>
+                        <p class="text-muted small mb-2">Complete user guide for all system modules</p>
+                        <span class="badge bg-primary"><i class="bi bi-file-pdf me-1"></i>View PDF</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-3 mb-md-0">
+                <a href="/docs/Marketing_Brochure.html" target="_blank" class="card h-100 text-decoration-none border-success hover-shadow">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-megaphone text-success" style="font-size: 2.5rem;"></i>
+                        <h5 class="mt-3 mb-1 text-dark">Marketing</h5>
+                        <p class="text-muted small mb-2">Product overview and features brochure</p>
+                        <span class="badge bg-success"><i class="bi bi-file-pdf me-1"></i>View PDF</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-3 mb-md-0">
+                <a href="/docs/Cloud_Architecture_Review.html" target="_blank" class="card h-100 text-decoration-none border-info hover-shadow">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-cloud text-info" style="font-size: 2.5rem;"></i>
+                        <h5 class="mt-3 mb-1 text-dark">Cloud Architecture</h5>
+                        <p class="text-muted small mb-2">AWS, Azure, GCP compliance review</p>
+                        <span class="badge bg-info"><i class="bi bi-file-pdf me-1"></i>View PDF</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/docs/Security_Architecture_Review.html" target="_blank" class="card h-100 text-decoration-none border-danger hover-shadow">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-shield-check text-danger" style="font-size: 2.5rem;"></i>
+                        <h5 class="mt-3 mb-1 text-dark">Security Review</h5>
+                        <p class="text-muted small mb-2">Security architecture assessment</p>
+                        <span class="badge bg-danger"><i class="bi bi-file-pdf me-1"></i>View PDF</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Training Modules -->
 <h4 class="mb-3"><i class="bi bi-collection me-2"></i>Training Modules</h4>
 
@@ -99,6 +150,17 @@ ob_start();
     </div>
     <?php endforeach; ?>
 </div>
+
+<style>
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+</style>
 
 <?php
 $content = ob_get_clean();
