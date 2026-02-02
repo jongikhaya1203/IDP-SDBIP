@@ -1,0 +1,95 @@
+# =============================================================================
+# Alertmanager Configuration - SDBIP/IDP
+# =============================================================================
+
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: 'smtp.example.com:587'
+  smtp_from: 'alertmanager@municipality.gov.za'
+  smtp_auth_username: 'alertmanager@municipality.gov.za'
+  smtp_auth_password: '${SMTP_PASSWORD}'
+  smtp_require_tls: true
+
+# Alert templates
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Routing configuration
+route:
+  group_by: ['alertname', 'severity', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: 'default-receiver'
+
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: 'critical-receiver'
+      group_wait: 10s
+      repeat_interval: 1h
+
+    # Warning alerts
+    - match:
+        severity: warning
+      receiver: 'warning-receiver'
+      group_wait: 1m
+      repeat_interval: 4h
+
+    # Business alerts (SDBIP specific)
+    - match:
+        type: business
+      receiver: 'business-receiver'
+      group_wait: 5m
+      repeat_interval: 24h
+
+# Inhibition rules
+inhibit_rules:
+  # If critical is firing, inhibit warning for same service
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'service']
+
+  # If application is down, don't alert on metrics from that app
+  - source_match:
+      alertname: 'ApplicationDown'
+    target_match_re:
+      alertname: 'High.*'
+    equal: ['service']
+
+# Receivers
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: 'it-support@municipality.gov.za'
+        send_resolved: true
+
+  - name: 'critical-receiver'
+    email_configs:
+      - to: 'it-critical@municipality.gov.za'
+        send_resolved: true
+    # Uncomment for Slack
+    # slack_configs:
+    #   - api_url: '${SLACK_WEBHOOK_URL}'
+    #     channel: '#sdbip-critical'
+    #     title: '{{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
+    #     text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+    #     send_resolved: true
+
+  - name: 'warning-receiver'
+    email_configs:
+      - to: 'it-support@municipality.gov.za'
+        send_resolved: true
+    # Uncomment for Slack
+    # slack_configs:
+    #   - api_url: '${SLACK_WEBHOOK_URL}'
+    #     channel: '#sdbip-alerts'
+    #     send_resolved: true
+
+  - name: 'business-receiver'
+    email_configs:
+      - to: 'performance-management@municipality.gov.za'
+        send_resolved: false

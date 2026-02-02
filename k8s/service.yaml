@@ -1,0 +1,89 @@
+# =============================================================================
+# Kubernetes Services - SDBIP/IDP Management System
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: sdbip-app
+  namespace: sdbip
+  labels:
+    app: sdbip
+    component: web
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: metrics
+      protocol: TCP
+  selector:
+    app: sdbip
+    component: web
+
+---
+# =============================================================================
+# Headless Service for StatefulSet (if needed)
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: sdbip-app-headless
+  namespace: sdbip
+  labels:
+    app: sdbip
+    component: web
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app: sdbip
+    component: web
+
+---
+# =============================================================================
+# MySQL Service (External)
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: sdbip
+  labels:
+    app: sdbip
+    component: database
+spec:
+  type: ExternalName
+  externalName: sdbip-mysql.cluster-xxx.af-south-1.rds.amazonaws.com
+
+---
+# =============================================================================
+# Redis Service
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: sdbip
+  labels:
+    app: sdbip
+    component: cache
+spec:
+  type: ClusterIP
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+  selector:
+    app: sdbip
+    component: cache

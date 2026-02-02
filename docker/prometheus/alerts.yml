@@ -1,0 +1,298 @@
+# =============================================================================
+# Prometheus Alert Rules - SDBIP/IDP Monitoring
+# =============================================================================
+
+groups:
+  # ===========================================================================
+  # Application Alerts
+  # ===========================================================================
+  - name: sdbip-application
+    rules:
+      - alert: ApplicationDown
+        expr: up{job="sdbip-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: sdbip
+        annotations:
+          summary: "SDBIP Application is down"
+          description: "The SDBIP application has been unreachable for more than 1 minute."
+
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{job="sdbip-app", status=~"5.."}[5m])) /
+          sum(rate(http_requests_total{job="sdbip-app"}[5m])) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: sdbip
+        annotations:
+          summary: "High HTTP error rate detected"
+          description: "Error rate is {{ $value | printf \"%.2f\" }}% (threshold: 5%)"
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="sdbip-app"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: sdbip
+        annotations:
+          summary: "High request latency detected"
+          description: "95th percentile latency is {{ $value | printf \"%.2f\" }}s (threshold: 2s)"
+
+      - alert: EndpointDown
+        expr: probe_success{job="blackbox-http"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: sdbip
+        annotations:
+          summary: "Endpoint {{ $labels.instance }} is down"
+          description: "The endpoint has been unreachable for more than 2 minutes."
+
+  # ===========================================================================
+  # PHP-FPM Alerts
+  # ===========================================================================
+  - name: php-fpm
+    rules:
+      - alert: PHPFPMDown
+        expr: up{job="php-fpm"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: php-fpm
+        annotations:
+          summary: "PHP-FPM is down"
+          description: "PHP-FPM process has been unreachable for more than 1 minute."
+
+      - alert: PHPFPMHighProcessUtilization
+        expr: |
+          (phpfpm_active_processes / phpfpm_total_processes) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: php-fpm
+        annotations:
+          summary: "PHP-FPM process pool is nearly exhausted"
+          description: "{{ $value | printf \"%.0f\" }}% of PHP-FPM processes are active."
+
+      - alert: PHPFPMSlowRequests
+        expr: rate(phpfpm_slow_requests[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: php-fpm
+        annotations:
+          summary: "PHP-FPM slow requests detected"
+          description: "{{ $value | printf \"%.2f\" }} slow requests per second."
+
+  # ===========================================================================
+  # Nginx Alerts
+  # ===========================================================================
+  - name: nginx
+    rules:
+      - alert: NginxDown
+        expr: up{job="nginx"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: nginx
+        annotations:
+          summary: "Nginx is down"
+          description: "Nginx has been unreachable for more than 1 minute."
+
+      - alert: NginxHighConnections
+        expr: nginx_connections_active > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: nginx
+        annotations:
+          summary: "High number of Nginx connections"
+          description: "{{ $value }} active connections detected."
+
+  # ===========================================================================
+  # MySQL/Database Alerts
+  # ===========================================================================
+  - name: mysql
+    rules:
+      - alert: MySQLDown
+        expr: up{job="mysql"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: mysql
+        annotations:
+          summary: "MySQL is down"
+          description: "MySQL database has been unreachable for more than 1 minute."
+
+      - alert: MySQLHighConnections
+        expr: |
+          mysql_global_status_threads_connected / mysql_global_variables_max_connections * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: mysql
+        annotations:
+          summary: "MySQL connection pool nearly exhausted"
+          description: "{{ $value | printf \"%.0f\" }}% of max connections in use."
+
+      - alert: MySQLSlowQueries
+        expr: rate(mysql_global_status_slow_queries[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: mysql
+        annotations:
+          summary: "MySQL slow queries detected"
+          description: "{{ $value | printf \"%.2f\" }} slow queries per second."
+
+      - alert: MySQLReplicationLag
+        expr: mysql_slave_status_seconds_behind_master > 30
+        for: 5m
+        labels:
+          severity: warning
+          service: mysql
+        annotations:
+          summary: "MySQL replication lag detected"
+          description: "Replication is {{ $value }}s behind master."
+
+  # ===========================================================================
+  # Redis Alerts
+  # ===========================================================================
+  - name: redis
+    rules:
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis has been unreachable for more than 1 minute."
+
+      - alert: RedisHighMemory
+        expr: |
+          redis_memory_used_bytes / redis_memory_max_bytes * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis memory usage is high"
+          description: "{{ $value | printf \"%.0f\" }}% of max memory in use."
+
+      - alert: RedisKeyEviction
+        expr: rate(redis_evicted_keys_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis is evicting keys"
+          description: "{{ $value | printf \"%.2f\" }} keys evicted per second."
+
+      - alert: RedisRejectedConnections
+        expr: rate(redis_rejected_connections_total[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis is rejecting connections"
+          description: "{{ $value | printf \"%.2f\" }} connections rejected per second."
+
+  # ===========================================================================
+  # System/Node Alerts
+  # ===========================================================================
+  - name: node
+    rules:
+      - alert: HighCPUUsage
+        expr: |
+          100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value | printf \"%.0f\" }}%."
+
+      - alert: HighMemoryUsage
+        expr: |
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value | printf \"%.0f\" }}%."
+
+      - alert: DiskSpaceLow
+        expr: |
+          (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} /
+                node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value | printf \"%.0f\" }}% on {{ $labels.mountpoint }}."
+
+      - alert: DiskSpaceCritical
+        expr: |
+          (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} /
+                node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100 > 95
+        for: 1m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "Critical disk space on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value | printf \"%.0f\" }}% on {{ $labels.mountpoint }}."
+
+  # ===========================================================================
+  # Business Alerts (SDBIP Specific)
+  # ===========================================================================
+  - name: sdbip-business
+    rules:
+      - alert: QuarterlySubmissionDeadlineApproaching
+        expr: |
+          (sdbip_quarterly_deadline_timestamp - time()) / 86400 < 7 and
+          (sdbip_quarterly_deadline_timestamp - time()) > 0
+        for: 1h
+        labels:
+          severity: info
+          service: sdbip
+          type: business
+        annotations:
+          summary: "Quarterly submission deadline approaching"
+          description: "Only {{ $value | printf \"%.0f\" }} days until Q{{ $labels.quarter }} deadline."
+
+      - alert: LowKPISubmissionRate
+        expr: |
+          (sdbip_kpi_submitted_count / sdbip_kpi_total_count) * 100 < 50 and
+          (sdbip_quarterly_deadline_timestamp - time()) / 86400 < 3
+        for: 1h
+        labels:
+          severity: warning
+          service: sdbip
+          type: business
+        annotations:
+          summary: "Low KPI submission rate"
+          description: "Only {{ $value | printf \"%.0f\" }}% of KPIs submitted with deadline in < 3 days."
+
+      - alert: POEPendingReview
+        expr: sdbip_poe_pending_review_count > 50
+        for: 24h
+        labels:
+          severity: info
+          service: sdbip
+          type: business
+        annotations:
+          summary: "Many POE documents awaiting review"
+          description: "{{ $value }} POE documents pending manager/assessor review."

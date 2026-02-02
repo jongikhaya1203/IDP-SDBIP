@@ -1,0 +1,18 @@
+# =============================================================================
+# Grafana Dashboard Provisioning - SDBIP/IDP
+# =============================================================================
+
+apiVersion: 1
+
+providers:
+  - name: 'SDBIP Dashboards'
+    orgId: 1
+    folder: 'SDBIP'
+    folderUid: 'sdbip'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 60
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true

@@ -1,0 +1,213 @@
+# =============================================================================
+# Kubernetes ConfigMaps - SDBIP/IDP Management System
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sdbip-config
+  namespace: sdbip
+  labels:
+    app: sdbip
+data:
+  APP_NAME: "SDBIP/IDP Management System"
+  APP_ENV: "production"
+  APP_DEBUG: "false"
+  APP_URL: "https://sdbip.municipality.gov.za"
+
+  # Database
+  DB_CONNECTION: "mysql"
+  DB_PORT: "3306"
+  DB_DATABASE: "sdbip_production"
+
+  # Cache & Session
+  CACHE_DRIVER: "redis"
+  SESSION_DRIVER: "redis"
+  SESSION_LIFETIME: "120"
+
+  # Redis
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+
+  # AWS S3 for POE storage
+  FILESYSTEM_DRIVER: "s3"
+  AWS_DEFAULT_REGION: "af-south-1"
+  AWS_BUCKET: "sdbip-poe-storage"
+
+  # Logging
+  LOG_CHANNEL: "stack"
+  LOG_LEVEL: "info"
+
+  # Queue
+  QUEUE_CONNECTION: "redis"
+
+  # Mail
+  MAIL_MAILER: "smtp"
+  MAIL_PORT: "587"
+  MAIL_ENCRYPTION: "tls"
+
+  # Timezone
+  APP_TIMEZONE: "Africa/Johannesburg"
+
+  # Financial Year Settings
+  FINANCIAL_YEAR_START_MONTH: "7"
+  FINANCIAL_YEAR_START_DAY: "1"
+
+---
+# =============================================================================
+# PHP Configuration ConfigMap
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sdbip-php-config
+  namespace: sdbip
+  labels:
+    app: sdbip
+data:
+  php.ini: |
+    ; Production PHP Configuration
+
+    [PHP]
+    display_errors = Off
+    display_startup_errors = Off
+    error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+    log_errors = On
+    error_log = /var/log/sdbip/php-error.log
+
+    memory_limit = 256M
+    max_execution_time = 60
+    max_input_time = 60
+    max_input_vars = 5000
+    post_max_size = 50M
+    upload_max_filesize = 50M
+    max_file_uploads = 20
+
+    date.timezone = Africa/Johannesburg
+
+    [Session]
+    session.save_handler = redis
+    session.save_path = "tcp://redis:6379"
+    session.gc_maxlifetime = 7200
+    session.cookie_httponly = 1
+    session.cookie_secure = 1
+    session.cookie_samesite = Strict
+
+    [opcache]
+    opcache.enable = 1
+    opcache.memory_consumption = 256
+    opcache.interned_strings_buffer = 16
+    opcache.max_accelerated_files = 20000
+    opcache.validate_timestamps = 0
+    opcache.save_comments = 1
+    opcache.fast_shutdown = 1
+
+---
+# =============================================================================
+# Nginx Configuration ConfigMap
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sdbip-nginx-config
+  namespace: sdbip
+  labels:
+    app: sdbip
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name _;
+        root /var/www/html/public;
+        index index.php;
+
+        client_max_body_size 50M;
+        server_tokens off;
+
+        # Health check
+        location /health {
+            access_log off;
+            return 200 'healthy';
+            add_header Content-Type text/plain;
+        }
+
+        # Metrics
+        location /metrics {
+            access_log off;
+            allow 10.0.0.0/8;
+            deny all;
+        }
+
+        # Static files
+        location ~* \.(jpg|jpeg|png|gif|ico|css|js|woff|woff2|ttf|svg)$ {
+            expires 30d;
+            add_header Cache-Control "public, immutable";
+            access_log off;
+        }
+
+        # Deny sensitive files
+        location ~ /\. {
+            deny all;
+        }
+
+        location ~ \.(env|ini|log|sql)$ {
+            deny all;
+        }
+
+        # PHP handling
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            try_files $uri =404;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_index index.php;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param PATH_INFO $fastcgi_path_info;
+
+            fastcgi_connect_timeout 60s;
+            fastcgi_send_timeout 60s;
+            fastcgi_read_timeout 60s;
+        }
+    }
+
+---
+# =============================================================================
+# Prometheus Scrape Config
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-sdbip-config
+  namespace: monitoring
+  labels:
+    app: prometheus
+data:
+  sdbip-scrape.yml: |
+    - job_name: 'sdbip-app'
+      kubernetes_sd_configs:
+        - role: pod
+          namespaces:
+            names:
+              - sdbip
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
+        - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+          action: replace
+          regex: ([^:]+)(?::\d+)?;(\d+)
+          replacement: $1:$2
+          target_label: __address__
+        - source_labels: [__meta_kubernetes_namespace]
+          action: replace
+          target_label: kubernetes_namespace
+        - source_labels: [__meta_kubernetes_pod_name]
+          action: replace
+          target_label: kubernetes_pod_name

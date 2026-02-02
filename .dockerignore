@@ -1,0 +1,84 @@
+# =============================================================================
+# Docker Ignore - SDBIP/IDP
+# =============================================================================
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.docker
+
+# IDE and Editor
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs/
+*.md
+LICENSE
+CHANGELOG
+
+# Testing
+tests/
+phpunit.xml
+.phpunit.result.cache
+coverage/
+
+# Development files
+.env
+.env.*
+!.env.example
+*.log
+*.sql
+
+# Dependencies (will be installed in container)
+vendor/
+node_modules/
+
+# Build artifacts
+*.tar
+*.gz
+*.zip
+
+# Terraform
+terraform/
+*.tfstate*
+.terraform/
+
+# Kubernetes
+k8s/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+azure-pipelines.yml
+
+# Scripts (keep deploy scripts out of image)
+scripts/
+
+# Cache and temp
+*.cache
+tmp/
+temp/
+
+# Uploads (mounted as volume in production)
+public/uploads/poe/*
+!public/uploads/poe/.gitkeep
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# PHP tools
+phpcs.xml
+phpstan.neon
+.php-cs-fixer.cache
