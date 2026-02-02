@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDBIP & IDP Management System - Training Manual</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        body {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .cover-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            page-break-after: always;
+        }
+        .cover-page h1 {
+            font-size: 2.5em;
+            color: #2563eb;
+            margin-bottom: 0.5em;
+        }
+        .cover-page .subtitle {
+            font-size: 1.5em;
+            color: #64748b;
+            margin-bottom: 2em;
+        }
+        .cover-page .version {
+            font-size: 1em;
+            color: #94a3b8;
+        }
+        .cover-page .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 2em;
+        }
+        h1 { color: #1e293b; border-bottom: 3px solid #2563eb; padding-bottom: 10px; }
+        h2 { color: #2563eb; margin-top: 2em; }
+        h3 { color: #475569; }
+        .toc { page-break-after: always; }
+        .toc h2 { border-bottom: 2px solid #e2e8f0; }
+        .toc ul { list-style: none; padding: 0; }
+        .toc li { padding: 8px 0; border-bottom: 1px dotted #e2e8f0; }
+        .toc a { text-decoration: none; color: #2563eb; }
+        .chapter { page-break-before: always; }
+        .note {
+            background: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .tip {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+        .screenshot {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            background: #f8fafc;
+            text-align: center;
+            margin: 20px 0;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .step {
+            display: flex;
+            margin: 15px 0;
+        }
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="logo">IDP</div>
+        <h1>SDBIP & IDP Management System</h1>
+        <div class="subtitle">Comprehensive Training Manual</div>
+        <div class="version">
+            Version 2.0<br>
+            February 2026<br><br>
+            Municipal Performance Management System
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#chapter1">1. Introduction to the System</a></li>
+            <li><a href="#chapter2">2. Getting Started</a></li>
+            <li><a href="#chapter3">3. Dashboard Overview</a></li>
+            <li><a href="#chapter4">4. IDP Strategic Objectives</a></li>
+            <li><a href="#chapter5">5. SDBIP & KPI Management</a></li>
+            <li><a href="#chapter6">6. Quarterly Assessment Process</a></li>
+            <li><a href="#chapter7">7. Proof of Evidence (POE)</a></li>
+            <li><a href="#chapter8">8. Budget Management</a></li>
+            <li><a href="#chapter9">9. Mayoral IDP Imbizo</a></li>
+            <li><a href="#chapter10">10. Mayoral Lekgotla</a></li>
+            <li><a href="#chapter11">11. Reports & Analytics</a></li>
+            <li><a href="#chapter12">12. Control Panel Administration</a></li>
+            <li><a href="#chapter13">13. Troubleshooting & FAQ</a></li>
+        </ul>
+    </div>
+
+    <!-- Chapter 1 -->
+    <div class="chapter" id="chapter1">
+        <h1>1. Introduction to the System</h1>
+
+        <h2>1.1 Purpose</h2>
+        <p>The SDBIP & IDP Management System is a comprehensive web-based platform designed to help South African municipalities manage their Service Delivery and Budget Implementation Plan (SDBIP) and Integrated Development Plan (IDP) processes effectively.</p>
+
+        <h2>1.2 Key Features</h2>
+        <table>
+            <tr>
+                <th>Module</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Dashboard</td>
+                <td>Executive overview with KPIs, charts, and performance summaries</td>
+            </tr>
+            <tr>
+                <td>IDP Strategic Objectives</td>
+                <td>Manage integrated development plan strategic objectives</td>
+            </tr>
+            <tr>
+                <td>SDBIP & KPIs</td>
+                <td>Service delivery budget implementation with KPI tracking</td>
+            </tr>
+            <tr>
+                <td>Quarterly Assessment</td>
+                <td>Multi-level performance assessment workflow</td>
+            </tr>
+            <tr>
+                <td>Proof of Evidence</td>
+                <td>Document upload and verification for KPI achievements</td>
+            </tr>
+            <tr>
+                <td>Budget Management</td>
+                <td>Budget projections and capital projects tracking</td>
+            </tr>
+            <tr>
+                <td>Mayoral Imbizo</td>
+                <td>Community engagement and action item tracking</td>
+            </tr>
+            <tr>
+                <td>Mayoral Lekgotla</td>
+                <td>Priority management and IDP amendments</td>
+            </tr>
+            <tr>
+                <td>Reports & Analytics</td>
+                <td>Comprehensive reporting with AI-powered insights</td>
+            </tr>
+        </table>
+
+        <h2>1.3 User Roles</h2>
+        <table>
+            <tr>
+                <th>Role</th>
+                <th>Responsibilities</th>
+                <th>Access Level</th>
+            </tr>
+            <tr>
+                <td>Administrator</td>
+                <td>Full system configuration, user management, all modules</td>
+                <td>Full Access</td>
+            </tr>
+            <tr>
+                <td>Director</td>
+                <td>Directorate oversight, KPI approval, manager review</td>
+                <td>Directorate Level</td>
+            </tr>
+            <tr>
+                <td>Manager</td>
+                <td>KPI entry, self-assessment, team management</td>
+                <td>Department Level</td>
+            </tr>
+            <tr>
+                <td>Independent Assessor</td>
+                <td>Final assessment review and verification</td>
+                <td>Assessment Module</td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td>View dashboards and reports</td>
+                <td>Read Only</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Chapter 2 -->
+    <div class="chapter" id="chapter2">
+        <h1>2. Getting Started</h1>
+
+        <h2>2.1 Logging In</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Open your web browser and navigate to the system URL provided by your administrator.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Enter your username (usually your email address) and password.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Click the "Login" button to access the system.</div>
+        </div>
+
+        <div class="note">
+            <strong>Note:</strong> If LDAP/Active Directory integration is enabled, use your network credentials to log in.
+        </div>
+
+        <h2>2.2 Navigating the Interface</h2>
+        <p>The system uses a sidebar navigation layout with the following components:</p>
+        <ul>
+            <li><strong>Sidebar (Left):</strong> Main navigation menu with all available modules</li>
+            <li><strong>Top Bar:</strong> Breadcrumb navigation, notifications, and user menu</li>
+            <li><strong>Content Area:</strong> Main working area displaying the selected module</li>
+            <li><strong>Footer:</strong> Current financial year and quarter information</li>
+        </ul>
+
+        <h2>2.3 Understanding Financial Years and Quarters</h2>
+        <p>South African municipalities operate on a July-June financial year cycle:</p>
+        <table>
+            <tr>
+                <th>Quarter</th>
+                <th>Period</th>
+                <th>Assessment Deadline</th>
+            </tr>
+            <tr>
+                <td>Q1</td>
+                <td>July - September</td>
+                <td>October 15</td>
+            </tr>
+            <tr>
+                <td>Q2</td>
+                <td>October - December</td>
+                <td>January 15</td>
+            </tr>
+            <tr>
+                <td>Q3</td>
+                <td>January - March</td>
+                <td>April 15</td>
+            </tr>
+            <tr>
+                <td>Q4</td>
+                <td>April - June</td>
+                <td>July 15</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Chapter 3 -->
+    <div class="chapter" id="chapter3">
+        <h1>3. Dashboard Overview</h1>
+
+        <h2>3.1 Executive Dashboard</h2>
+        <p>The dashboard provides a real-time overview of organizational performance:</p>
+
+        <h3>Performance Cards</h3>
+        <ul>
+            <li><strong>Total KPIs:</strong> Number of active key performance indicators</li>
+            <li><strong>Overall Achievement:</strong> Percentage of KPIs meeting targets</li>
+            <li><strong>Pending Assessments:</strong> Assessments awaiting completion</li>
+            <li><strong>Budget Utilization:</strong> Current expenditure vs. budget</li>
+        </ul>
+
+        <h3>Charts and Visualizations</h3>
+        <ul>
+            <li><strong>Performance Trend:</strong> Quarterly performance over time</li>
+            <li><strong>Directorate Comparison:</strong> Performance by directorate</li>
+            <li><strong>KPI Status Distribution:</strong> Achieved, partially achieved, not achieved</li>
+            <li><strong>Budget Allocation:</strong> Budget distribution across projects</li>
+        </ul>
+
+        <div class="tip">
+            <strong>Tip:</strong> Click on any chart element to drill down into detailed data.
+        </div>
+    </div>
+
+    <!-- Chapter 4 -->
+    <div class="chapter" id="chapter4">
+        <h1>4. IDP Strategic Objectives</h1>
+
+        <h2>4.1 Understanding IDP Objectives</h2>
+        <p>IDP Strategic Objectives represent the long-term developmental goals of the municipality. They are organized hierarchically:</p>
+        <ul>
+            <li><strong>National Development Plan (NDP) Pillars:</strong> Aligned with national priorities</li>
+            <li><strong>Provincial Growth Strategy:</strong> Provincial development frameworks</li>
+            <li><strong>Municipal Strategic Objectives:</strong> Local priorities and goals</li>
+        </ul>
+
+        <h2>4.2 Creating an IDP Objective</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Navigate to IDP > Objectives from the sidebar menu.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Click "Add New Objective" button.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Fill in the required fields:
+                <ul>
+                    <li>Objective Code (e.g., SO1, SO2)</li>
+                    <li>Objective Title</li>
+                    <li>Description</li>
+                    <li>NDP Pillar alignment</li>
+                    <li>Responsible Directorate</li>
+                </ul>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div>Click "Save" to create the objective.</div>
+        </div>
+
+        <h2>4.3 Linking KPIs to Objectives</h2>
+        <p>Each KPI should be linked to at least one IDP objective to ensure alignment between operational activities and strategic goals.</p>
+    </div>
+
+    <!-- Chapter 5 -->
+    <div class="chapter" id="chapter5">
+        <h1>5. SDBIP & KPI Management</h1>
+
+        <h2>5.1 Understanding SDBIP</h2>
+        <p>The Service Delivery and Budget Implementation Plan (SDBIP) translates the IDP and budget into measurable outputs and outcomes through Key Performance Indicators (KPIs).</p>
+
+        <h2>5.2 KPI Structure</h2>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>KPI Code</td>
+                <td>Unique identifier</td>
+                <td>FIN-001</td>
+            </tr>
+            <tr>
+                <td>KPI Name</td>
+                <td>Descriptive title</td>
+                <td>Revenue Collection Rate</td>
+            </tr>
+            <tr>
+                <td>Baseline</td>
+                <td>Starting measurement</td>
+                <td>85%</td>
+            </tr>
+            <tr>
+                <td>Annual Target</td>
+                <td>Year-end goal</td>
+                <td>95%</td>
+            </tr>
+            <tr>
+                <td>Quarterly Targets</td>
+                <td>Q1, Q2, Q3, Q4 targets</td>
+                <td>88%, 90%, 93%, 95%</td>
+            </tr>
+            <tr>
+                <td>Unit of Measure</td>
+                <td>How it's measured</td>
+                <td>Percentage</td>
+            </tr>
+        </table>
+
+        <h2>5.3 Creating a KPI</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Navigate to SDBIP > KPIs from the sidebar.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Click "Create New KPI" button.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Complete all required fields including quarterly targets.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div>Link the KPI to an IDP objective.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">5</div>
+            <div>Assign responsible directorate and manager.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">6</div>
+            <div>Click "Save" to create the KPI.</div>
+        </div>
+
+        <div class="warning">
+            <strong>Important:</strong> Ensure quarterly targets progressively lead to the annual target. The system will validate target consistency.
+        </div>
+    </div>
+
+    <!-- Chapter 6 -->
+    <div class="chapter" id="chapter6">
+        <h1>6. Quarterly Assessment Process</h1>
+
+        <h2>6.1 Assessment Workflow</h2>
+        <p>The system implements a three-tier assessment process:</p>
+
+        <table>
+            <tr>
+                <th>Level</th>
+                <th>Assessor</th>
+                <th>Weight</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Level 1</td>
+                <td>Self-Assessment</td>
+                <td>20%</td>
+                <td>Manager reports own performance</td>
+            </tr>
+            <tr>
+                <td>Level 2</td>
+                <td>Manager Review</td>
+                <td>40%</td>
+                <td>Director validates and adjusts</td>
+            </tr>
+            <tr>
+                <td>Level 3</td>
+                <td>Independent Assessment</td>
+                <td>40%</td>
+                <td>External verification</td>
+            </tr>
+        </table>
+
+        <h2>6.2 Completing Self-Assessment</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Navigate to Assessment > Self Assessment.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Select the KPI to assess.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Enter the actual achieved value for the quarter.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div>Provide comments explaining performance.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">5</div>
+            <div>Upload Proof of Evidence documents.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">6</div>
+            <div>Submit for manager review.</div>
+        </div>
+
+        <h2>6.3 Rating Scale</h2>
+        <table>
+            <tr>
+                <th>Rating</th>
+                <th>Description</th>
+                <th>Achievement</th>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Outstanding</td>
+                <td>150%+ of target</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Exceeds Expectations</td>
+                <td>115-149% of target</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Meets Expectations</td>
+                <td>100-114% of target</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Below Expectations</td>
+                <td>50-99% of target</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Unacceptable</td>
+                <td>Below 50% of target</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Chapter 7 -->
+    <div class="chapter" id="chapter7">
+        <h1>7. Proof of Evidence (POE)</h1>
+
+        <h2>7.1 POE Requirements</h2>
+        <p>Proof of Evidence documents substantiate KPI achievements and are required for audit compliance.</p>
+
+        <h3>Acceptable Document Types</h3>
+        <ul>
+            <li>PDF documents</li>
+            <li>Microsoft Word documents (.doc, .docx)</li>
+            <li>Microsoft Excel spreadsheets (.xls, .xlsx)</li>
+            <li>Images (.jpg, .jpeg, .png)</li>
+            <li>Maximum file size: 10MB per document</li>
+        </ul>
+
+        <h2>7.2 Uploading POE</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Navigate to POE > Upload from the sidebar.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Select the quarterly assessment to attach POE.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Click "Choose File" and select your document.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div>Add a description of the document.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">5</div>
+            <div>Click "Upload" to submit.</div>
+        </div>
+
+        <h2>7.3 POE Review Process</h2>
+        <p>Managers can accept or reject POE submissions:</p>
+        <ul>
+            <li><strong>Accept:</strong> POE is verified and linked to assessment</li>
+            <li><strong>Reject:</strong> POE is returned with comments for resubmission</li>
+        </ul>
+
+        <div class="note">
+            <strong>Note:</strong> Users have 7 days to resubmit rejected POE documents.
+        </div>
+    </div>
+
+    <!-- Chapter 8 -->
+    <div class="chapter" id="chapter8">
+        <h1>8. Budget Management</h1>
+
+        <h2>8.1 Budget Projections</h2>
+        <p>Track and manage budget allocations across directorates and projects.</p>
+
+        <h3>Budget Categories</h3>
+        <ul>
+            <li><strong>Operating Budget:</strong> Day-to-day operational expenses</li>
+            <li><strong>Capital Budget:</strong> Infrastructure and asset investments</li>
+            <li><strong>Conditional Grants:</strong> Ring-fenced government allocations</li>
+        </ul>
+
+        <h2>8.2 Capital Projects</h2>
+        <p>Manage capital project lifecycle from planning to completion:</p>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Planning</td>
+                <td>Project in design/planning phase</td>
+            </tr>
+            <tr>
+                <td>Procurement</td>
+                <td>Tender and procurement processes</td>
+            </tr>
+            <tr>
+                <td>Implementation</td>
+                <td>Active construction/delivery</td>
+            </tr>
+            <tr>
+                <td>Completed</td>
+                <td>Project finished and handed over</td>
+            </tr>
+            <tr>
+                <td>On Hold</td>
+                <td>Temporarily suspended</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Chapter 9 -->
+    <div class="chapter" id="chapter9">
+        <h1>9. Mayoral IDP Imbizo</h1>
+
+        <h2>9.1 Overview</h2>
+        <p>The Mayoral IDP Imbizo module facilitates community engagement sessions with integrated livestreaming, comment extraction, and action item tracking.</p>
+
+        <h2>9.2 Creating an Imbizo Session</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Navigate to Imbizo > Create from the sidebar.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Enter session details (ward, venue, date, time).</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Configure livestream platforms (YouTube, Facebook, Twitter/X, Municipal Stream).</div>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div>Save the session.</div>
+        </div>
+
+        <h2>9.3 During the Imbizo</h2>
+        <ul>
+            <li><strong>Comments Extraction:</strong> Automatically pull comments from connected social media platforms</li>
+            <li><strong>Minutes Capture:</strong> Record opening remarks, discussion points, concerns, and commitments</li>
+            <li><strong>Action Items:</strong> Create and assign action items to directorates</li>
+        </ul>
+
+        <h2>9.4 Action Item Assignment</h2>
+        <p>Action items can be assigned to specific:</p>
+        <ul>
+            <li>Directorates</li>
+            <li>Departments</li>
+            <li>Individual employees</li>
+        </ul>
+    </div>
+
+    <!-- Chapter 10 -->
+    <div class="chapter" id="chapter10">
+        <h1>10. Mayoral Lekgotla</h1>
+
+        <h2>10.1 Purpose</h2>
+        <p>The Lekgotla module enables management of IDP priority changes resulting from strategic planning sessions.</p>
+
+        <h2>10.2 Priority Change Types</h2>
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Add New Priority</td>
+                <td>Introduce a new IDP priority from Imbizo commitments</td>
+            </tr>
+            <tr>
+                <td>Modify Existing</td>
+                <td>Adjust budget or scope of existing priority</td>
+            </tr>
+            <tr>
+                <td>Discard Priority</td>
+                <td>Remove priority and free up budget</td>
+            </tr>
+        </table>
+
+        <h2>10.3 Comparison View</h2>
+        <p>Compare IDP priorities before and after Lekgotla sessions to track changes and their impact on the overall plan.</p>
+    </div>
+
+    <!-- Chapter 11 -->
+    <div class="chapter" id="chapter11">
+        <h1>11. Reports & Analytics</h1>
+
+        <h2>11.1 Available Reports</h2>
+        <ul>
+            <li><strong>Quarterly Performance Report:</strong> Detailed KPI performance by quarter</li>
+            <li><strong>Directorate Report:</strong> Performance breakdown by directorate</li>
+            <li><strong>AI-Powered Insights:</strong> GPT-4 generated analysis and recommendations</li>
+            <li><strong>Compliance Reports:</strong> Regulatory compliance status</li>
+        </ul>
+
+        <h2>11.2 Export Options</h2>
+        <ul>
+            <li>PDF - Formatted reports for printing and distribution</li>
+            <li>Excel - Raw data for further analysis</li>
+            <li>CSV - Data export for integration with other systems</li>
+        </ul>
+
+        <h2>11.3 AI-Powered Reports</h2>
+        <p>When OpenAI integration is configured, the system can generate:</p>
+        <ul>
+            <li>Executive summaries</li>
+            <li>Performance narratives</li>
+            <li>Trend analysis</li>
+            <li>Improvement recommendations</li>
+        </ul>
+
+        <div class="note">
+            <strong>Note:</strong> AI reports require an OpenAI API key configured in the Control Panel.
+        </div>
+    </div>
+
+    <!-- Chapter 12 -->
+    <div class="chapter" id="chapter12">
+        <h1>12. Control Panel Administration</h1>
+
+        <h2>12.1 CMS Portal</h2>
+        <p>Customize system branding:</p>
+        <ul>
+            <li>Upload organization logo</li>
+            <li>Set favicon</li>
+            <li>Configure site name and tagline</li>
+            <li>Set primary and secondary theme colors</li>
+        </ul>
+
+        <h2>12.2 Module Configuration</h2>
+        <p>Enable or disable system modules based on organizational requirements.</p>
+
+        <h2>12.3 Integrations</h2>
+        <table>
+            <tr>
+                <th>Integration</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>OpenAI GPT-4</td>
+                <td>AI-powered report generation</td>
+            </tr>
+            <tr>
+                <td>LDAP/Active Directory</td>
+                <td>Enterprise authentication</td>
+            </tr>
+            <tr>
+                <td>SMTP Email</td>
+                <td>Email notifications</td>
+            </tr>
+            <tr>
+                <td>SMS Gateway</td>
+                <td>SMS alerts for urgent notifications</td>
+            </tr>
+        </table>
+
+        <h2>12.4 Backup & Restore</h2>
+        <p>Regular database backups should be performed through phpMyAdmin or command-line tools.</p>
+    </div>
+
+    <!-- Chapter 13 -->
+    <div class="chapter" id="chapter13">
+        <h1>13. Troubleshooting & FAQ</h1>
+
+        <h2>13.1 Common Issues</h2>
+
+        <h3>Cannot log in</h3>
+        <ul>
+            <li>Verify username and password are correct</li>
+            <li>Check if account is active</li>
+            <li>Clear browser cache and cookies</li>
+            <li>Contact administrator for password reset</li>
+        </ul>
+
+        <h3>POE upload fails</h3>
+        <ul>
+            <li>Check file size (max 10MB)</li>
+            <li>Verify file type is supported</li>
+            <li>Ensure stable internet connection</li>
+        </ul>
+
+        <h3>Charts not loading</h3>
+        <ul>
+            <li>Refresh the page</li>
+            <li>Disable browser extensions</li>
+            <li>Try a different browser</li>
+        </ul>
+
+        <h2>13.2 Frequently Asked Questions</h2>
+
+        <h3>Q: How do I reset my password?</h3>
+        <p>A: Contact your system administrator to request a password reset.</p>
+
+        <h3>Q: Can I access the system on mobile devices?</h3>
+        <p>A: Yes, the system is responsive and works on tablets and smartphones.</p>
+
+        <h3>Q: How long is data retained?</h3>
+        <p>A: Data is retained for the current and previous 5 financial years.</p>
+
+        <h3>Q: Who can see my assessments?</h3>
+        <p>A: Your assessments are visible to your manager, directors, and administrators.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>SDBIP & IDP Management System - Training Manual v2.0</p>
+        <p>&copy; 2026 Municipal Performance Management System. All rights reserved.</p>
+        <p>For support, contact your system administrator.</p>
+    </div>
+</body>
+</html>
