@@ -461,6 +461,39 @@
             </div>
 
             <div class="d-flex align-items-center gap-3">
+                <!-- Help & Documentation -->
+                <div class="dropdown">
+                    <button class="btn btn-link text-secondary" data-bs-toggle="dropdown" title="Help & Documentation">
+                        <i class="bi bi-question-circle fs-5"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end p-0" style="width: 280px;">
+                        <div class="p-3 border-bottom bg-light">
+                            <h6 class="mb-0"><i class="bi bi-book me-2"></i>Documentation</h6>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="/docs/Training_Manual.html" target="_blank" class="list-group-item list-group-item-action">
+                                <i class="bi bi-mortarboard me-2 text-primary"></i>Training Manual
+                                <small class="d-block text-muted">Complete user guide</small>
+                            </a>
+                            <a href="/docs/Marketing_Brochure.html" target="_blank" class="list-group-item list-group-item-action">
+                                <i class="bi bi-megaphone me-2 text-success"></i>Marketing Brochure
+                                <small class="d-block text-muted">Product overview</small>
+                            </a>
+                            <a href="/docs/Cloud_Architecture_Review.html" target="_blank" class="list-group-item list-group-item-action">
+                                <i class="bi bi-cloud me-2 text-info"></i>Cloud Architecture
+                                <small class="d-block text-muted">AWS, Azure, GCP compliance</small>
+                            </a>
+                            <a href="/docs/Security_Architecture_Review.html" target="_blank" class="list-group-item list-group-item-action">
+                                <i class="bi bi-shield-check me-2 text-danger"></i>Security Review
+                                <small class="d-block text-muted">Security architecture</small>
+                            </a>
+                        </div>
+                        <div class="p-2 border-top text-center bg-light">
+                            <a href="/training" class="small"><i class="bi bi-play-circle me-1"></i>Training Center</a>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Notifications -->
                 <div class="dropdown">
                     <button class="btn btn-link text-secondary position-relative" data-bs-toggle="dropdown">
