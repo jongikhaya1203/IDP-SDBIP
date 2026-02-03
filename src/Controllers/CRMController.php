@@ -11,7 +11,7 @@ class CRMController {
      */
     public function index(): void {
         $db = db();
-        $fyId = current_financial_year()['id'];
+        $fyId = $_SESSION['current_financial_year_id'] ?? $db->fetch("SELECT id FROM financial_years WHERE is_current = 1 LIMIT 1")['id'] ?? 1;
         $quarter = current_quarter();
 
         // Get submission statistics
@@ -234,7 +234,7 @@ class CRMController {
         }
 
         // Get directorate performance data
-        $fyId = current_financial_year()['id'];
+        $fyId = $_SESSION['current_financial_year_id'] ?? $db->fetch("SELECT id FROM financial_years WHERE is_current = 1 LIMIT 1")['id'] ?? 1;
         $quarter = current_quarter();
         $performanceData = $this->getDirectoratePerformance($directorateId, $fyId, $quarter);
 
@@ -291,7 +291,7 @@ class CRMController {
         $reminderType = $_POST['reminder_type'] ?? 'submission_reminder';
         $targetGroup = $_POST['target_group'] ?? 'pending'; // pending, all, overdue
 
-        $fyId = current_financial_year()['id'];
+        $fyId = $_SESSION['current_financial_year_id'] ?? $db->fetch("SELECT id FROM financial_years WHERE is_current = 1 LIMIT 1")['id'] ?? 1;
         $quarter = current_quarter();
 
         // Get directorates based on target group
@@ -369,7 +369,7 @@ class CRMController {
             return;
         }
 
-        $fyId = current_financial_year()['id'];
+        $fyId = $_SESSION['current_financial_year_id'] ?? $db->fetch("SELECT id FROM financial_years WHERE is_current = 1 LIMIT 1")['id'] ?? 1;
         $quarter = current_quarter();
         $performanceData = $this->getDirectoratePerformance($directorateId, $fyId, $quarter);
 
@@ -411,7 +411,7 @@ class CRMController {
         $db = db();
         $directorateId = (int)($_GET['directorate_id'] ?? 0);
 
-        $fyId = current_financial_year()['id'];
+        $fyId = $_SESSION['current_financial_year_id'] ?? $db->fetch("SELECT id FROM financial_years WHERE is_current = 1 LIMIT 1")['id'] ?? 1;
         $quarter = current_quarter();
 
         $directorate = $db->fetch("SELECT * FROM directorates WHERE id = ?", [$directorateId]);
