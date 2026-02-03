@@ -286,6 +286,18 @@ $router->get('/reports/export/excel', 'ReportController@exportExcel', ['auth', '
 $router->get('/reports/export/pdf', 'ReportController@exportPdf', ['auth', 'manager']);
 
 // =====================================================
+// CRM ROUTES (Reminder Management)
+// =====================================================
+$router->get('/crm', 'CRMController@index', ['auth', 'manager']);
+$router->get('/crm/sla-config', 'CRMController@slaConfig', ['auth', 'admin']);
+$router->post('/crm/sla-config/save', 'CRMController@saveSLAConfig', ['auth', 'admin', 'csrf']);
+$router->get('/crm/logs', 'CRMController@logs', ['auth', 'manager']);
+$router->post('/crm/send-reminder', 'CRMController@sendReminder', ['auth', 'manager', 'csrf']);
+$router->post('/crm/send-bulk-reminders', 'CRMController@sendBulkReminders', ['auth', 'manager', 'csrf']);
+$router->post('/crm/escalate', 'CRMController@escalate', ['auth', 'manager', 'csrf']);
+$router->get('/crm/performance-preview/{id}', 'CRMController@performancePreview', ['auth', 'manager']);
+
+// =====================================================
 // ADMIN ROUTES
 // =====================================================
 $router->get('/admin', 'AdminController@index', ['auth', 'admin']);

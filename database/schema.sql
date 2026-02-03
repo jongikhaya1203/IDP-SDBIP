@@ -578,5 +578,56 @@ INSERT INTO settings (setting_key, setting_value, setting_type, description, is_
 ('session_timeout', '3600', 'integer', 'Session timeout in seconds', 0);
 
 -- =====================================================
+-- CRM REMINDER LOGS TABLE
+-- =====================================================
+CREATE TABLE IF NOT EXISTS crm_reminder_logs (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    directorate_id INT UNSIGNED NULL,
+    reminder_type ENUM('submission_reminder', 'first_reminder', 'second_reminder', 'final_warning', 'escalation', 'escalation_director', 'escalation_mm', 'escalation_mayor', 'performance_report') NOT NULL,
+    recipient_email VARCHAR(500) NOT NULL,
+    subject VARCHAR(500) NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('sent', 'failed', 'pending') DEFAULT 'pending',
+    sent_by INT UNSIGNED NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    performance_snapshot JSON NULL COMMENT 'Snapshot of directorate performance at time of reminder',
+    escalation_level VARCHAR(50) NULL,
+    is_bulk TINYINT(1) DEFAULT 0,
+    response_received TINYINT(1) DEFAULT 0,
+    response_date TIMESTAMP NULL,
+    notes TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (directorate_id) REFERENCES directorates(id) ON DELETE SET NULL,
+    FOREIGN KEY (sent_by) REFERENCES users(id) ON DELETE SET NULL,
+    INDEX idx_directorate (directorate_id),
+    INDEX idx_reminder_type (reminder_type),
+    INDEX idx_sent_at (sent_at),
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =====================================================
+-- CRM SLA ESCALATION TRACKING TABLE
+-- =====================================================
+CREATE TABLE IF NOT EXISTS crm_escalation_tracking (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    directorate_id INT UNSIGNED NOT NULL,
+    financial_year_id INT UNSIGNED NOT NULL,
+    quarter TINYINT NOT NULL,
+    first_reminder_sent TIMESTAMP NULL,
+    second_reminder_sent TIMESTAMP NULL,
+    final_warning_sent TIMESTAMP NULL,
+    escalated_to_mm TIMESTAMP NULL,
+    escalated_to_mayor TIMESTAMP NULL,
+    resolved_at TIMESTAMP NULL,
+    resolution_notes TEXT NULL,
+    current_status ENUM('pending', 'reminded', 'escalated', 'resolved') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (directorate_id) REFERENCES directorates(id) ON DELETE CASCADE,
+    FOREIGN KEY (financial_year_id) REFERENCES financial_years(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_tracking (directorate_id, financial_year_id, quarter)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =====================================================
 -- END OF SCHEMA
 -- =====================================================

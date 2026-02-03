@@ -167,6 +167,17 @@ define('MENU_ITEMS', [
             ['label' => 'AI Analysis', 'url' => '/reports/ai']
         ]
     ],
+    'crm' => [
+        'label' => 'CRM Portal',
+        'icon' => 'bi-envelope-paper',
+        'url' => '/crm',
+        'roles' => ['admin', 'director', 'manager'],
+        'submenu' => [
+            ['label' => 'Dashboard', 'url' => '/crm'],
+            ['label' => 'Reminder Logs', 'url' => '/crm/logs'],
+            ['label' => 'SLA Configuration', 'url' => '/crm/sla-config']
+        ]
+    ],
     'admin' => [
         'label' => 'Administration',
         'icon' => 'bi-gear',
