@@ -280,6 +280,7 @@ $router->get('/reports/directorate', 'ReportController@directorate', ['auth', 'm
 $router->get('/reports/directorate/{id}', 'ReportController@directorateDetail', ['auth', 'manager']);
 $router->get('/reports/ai', 'AIReportController@index', ['auth', 'manager']);
 $router->post('/reports/ai/generate', 'AIReportController@generate', ['auth', 'manager', 'csrf']);
+$router->post('/reports/ai/generate-template', 'AIReportController@generateTemplate', ['auth', 'manager', 'csrf']);
 $router->get('/reports/ai/{id}', 'AIReportController@show', ['auth']);
 $router->get('/reports/export/excel', 'ReportController@exportExcel', ['auth', 'manager']);
 $router->get('/reports/export/pdf', 'ReportController@exportPdf', ['auth', 'manager']);

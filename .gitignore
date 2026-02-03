@@ -1,0 +1,63 @@
+# =============================================================================
+# Git Ignore - SDBIP/IDP Management System
+# =============================================================================
+
+# Environment files (contains secrets)
+.env
+!.env.example
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Dependencies
+vendor/
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# Cache
+*.cache
+cache/
+tmp/
+temp/
+
+# Uploads (mounted separately in production)
+public/uploads/poe/*
+!public/uploads/poe/.gitkeep
+
+# Compiled files
+*.o
+*.class
+*.pyc
+
+# Windows reserved names
+nul
+con
+prn
+aux
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Test coverage
+coverage/
+.phpunit.result.cache
+
+# Terraform state (sensitive)
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+!*.tfvars.example
