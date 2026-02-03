@@ -244,47 +244,279 @@ class CpanelController {
     }
 
     public function integrations(): void {
-        $openaiKey = defined('OPENAI_API_KEY') ? OPENAI_API_KEY : '';
-        $ldapEnabled = defined('LDAP_ENABLED') ? LDAP_ENABLED : false;
-        $mailHost = getenv('MAIL_HOST') ?: '';
-
-        $integrations = [
-            [
-                'name' => 'OpenAI GPT-4',
-                'description' => 'AI-powered report generation and insights',
-                'icon' => 'robot',
-                'status' => $openaiKey ? 'active' : 'inactive',
-                'config_key' => 'OPENAI_API_KEY'
-            ],
-            [
-                'name' => 'LDAP / Active Directory',
-                'description' => 'Enterprise authentication integration',
-                'icon' => 'shield-lock',
-                'status' => $ldapEnabled ? 'active' : 'inactive',
-                'config_key' => 'LDAP_ENABLED'
-            ],
-            [
-                'name' => 'Email (SMTP)',
-                'description' => 'Email notifications and alerts',
-                'icon' => 'envelope',
-                'status' => $mailHost ? 'active' : 'inactive',
-                'config_key' => 'MAIL_HOST'
-            ],
-            [
-                'name' => 'SMS Gateway',
-                'description' => 'SMS notifications for urgent alerts',
-                'icon' => 'phone',
-                'status' => 'inactive',
-                'config_key' => 'SMS_API_KEY'
-            ]
-        ];
+        $settings = $this->getIntegrationSettings();
 
         $data = [
             'title' => 'Integrations',
-            'integrations' => $integrations
+            'settings' => $settings
         ];
 
         view('cpanel.integrations', $data);
+    }
+
+    public function saveSmtpSettings(): void {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('/cpanel/integrations');
+            return;
+        }
+
+        $settings = $this->getIntegrationSettings();
+
+        $settings['smtp_host'] = trim($_POST['smtp_host'] ?? '');
+        $settings['smtp_port'] = $_POST['smtp_port'] ?? '587';
+        $settings['smtp_username'] = trim($_POST['smtp_username'] ?? '');
+        if (!empty($_POST['smtp_password']) && $_POST['smtp_password'] !== '••••••••') {
+            $settings['smtp_password'] = $_POST['smtp_password'];
+        }
+        $settings['smtp_from_email'] = trim($_POST['smtp_from_email'] ?? '');
+        $settings['smtp_from_name'] = trim($_POST['smtp_from_name'] ?? '');
+        $settings['smtp_encryption'] = $_POST['smtp_encryption'] ?? 'tls';
+
+        $this->saveIntegrationSettings($settings);
+        flash('success', 'SMTP settings saved successfully.');
+        redirect('/cpanel/integrations');
+    }
+
+    public function saveLdapSettings(): void {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('/cpanel/integrations');
+            return;
+        }
+
+        $settings = $this->getIntegrationSettings();
+
+        $settings['ldap_enabled'] = isset($_POST['ldap_enabled']);
+        $settings['ldap_host'] = trim($_POST['ldap_host'] ?? '');
+        $settings['ldap_port'] = $_POST['ldap_port'] ?? '389';
+        $settings['ldap_base_dn'] = trim($_POST['ldap_base_dn'] ?? '');
+        $settings['ldap_bind_dn'] = trim($_POST['ldap_bind_dn'] ?? '');
+        if (!empty($_POST['ldap_bind_password']) && $_POST['ldap_bind_password'] !== '••••••••') {
+            $settings['ldap_bind_password'] = $_POST['ldap_bind_password'];
+        }
+        $settings['ldap_user_filter'] = trim($_POST['ldap_user_filter'] ?? '(sAMAccountName=%s)');
+
+        $this->saveIntegrationSettings($settings);
+        flash('success', 'LDAP settings saved successfully.');
+        redirect('/cpanel/integrations');
+    }
+
+    public function saveSmsSettings(): void {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('/cpanel/integrations');
+            return;
+        }
+
+        $settings = $this->getIntegrationSettings();
+
+        $settings['sms_enabled'] = isset($_POST['sms_enabled']);
+        $settings['sms_provider'] = $_POST['sms_provider'] ?? '';
+        if (!empty($_POST['sms_api_key']) && $_POST['sms_api_key'] !== '••••••••') {
+            $settings['sms_api_key'] = $_POST['sms_api_key'];
+        }
+        if (!empty($_POST['sms_api_secret']) && $_POST['sms_api_secret'] !== '••••••••') {
+            $settings['sms_api_secret'] = $_POST['sms_api_secret'];
+        }
+        $settings['sms_sender_id'] = trim($_POST['sms_sender_id'] ?? '');
+        $settings['sms_api_url'] = trim($_POST['sms_api_url'] ?? '');
+        $settings['sms_notify_deadlines'] = isset($_POST['sms_notify_deadlines']);
+        $settings['sms_notify_approvals'] = isset($_POST['sms_notify_approvals']);
+        $settings['sms_notify_alerts'] = isset($_POST['sms_notify_alerts']);
+        $settings['sms_notify_imbizo'] = isset($_POST['sms_notify_imbizo']);
+
+        $this->saveIntegrationSettings($settings);
+        flash('success', 'SMS Gateway settings saved successfully.');
+        redirect('/cpanel/integrations');
+    }
+
+    public function saveOpenaiSettings(): void {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('/cpanel/integrations');
+            return;
+        }
+
+        $settings = $this->getIntegrationSettings();
+
+        if (!empty($_POST['openai_api_key']) && strpos($_POST['openai_api_key'], '••') === false) {
+            $settings['openai_api_key'] = trim($_POST['openai_api_key']);
+        }
+        $settings['openai_model'] = $_POST['openai_model'] ?? 'gpt-4';
+        $settings['openai_max_tokens'] = (int)($_POST['openai_max_tokens'] ?? 4000);
+        $settings['openai_temperature'] = (float)($_POST['openai_temperature'] ?? 0.7);
+        $settings['ai_quarterly_reports'] = isset($_POST['ai_quarterly_reports']);
+        $settings['ai_recommendations'] = isset($_POST['ai_recommendations']);
+        $settings['ai_risk_analysis'] = isset($_POST['ai_risk_analysis']);
+        $settings['ai_trend_detection'] = isset($_POST['ai_trend_detection']);
+
+        $this->saveIntegrationSettings($settings);
+        flash('success', 'OpenAI settings saved successfully.');
+        redirect('/cpanel/integrations');
+    }
+
+    public function testSmtp(): void {
+        header('Content-Type: application/json');
+        $settings = $this->getIntegrationSettings();
+
+        if (empty($settings['smtp_host'])) {
+            echo json_encode(['success' => false, 'message' => 'SMTP host not configured']);
+            return;
+        }
+
+        // Test SMTP connection
+        try {
+            $socket = @fsockopen($settings['smtp_host'], (int)$settings['smtp_port'], $errno, $errstr, 5);
+            if ($socket) {
+                fclose($socket);
+                echo json_encode(['success' => true, 'message' => 'SMTP server is reachable on port ' . $settings['smtp_port']]);
+            } else {
+                echo json_encode(['success' => false, 'message' => "Connection failed: $errstr ($errno)"]);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Connection error: ' . $e->getMessage()]);
+        }
+    }
+
+    public function testLdap(): void {
+        header('Content-Type: application/json');
+        $settings = $this->getIntegrationSettings();
+
+        if (empty($settings['ldap_host'])) {
+            echo json_encode(['success' => false, 'message' => 'LDAP host not configured']);
+            return;
+        }
+
+        if (!function_exists('ldap_connect')) {
+            echo json_encode(['success' => false, 'message' => 'PHP LDAP extension not installed']);
+            return;
+        }
+
+        try {
+            $ldap = @ldap_connect($settings['ldap_host'], (int)$settings['ldap_port']);
+            if ($ldap) {
+                ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+                ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+
+                if (!empty($settings['ldap_bind_dn']) && !empty($settings['ldap_bind_password'])) {
+                    $bind = @ldap_bind($ldap, $settings['ldap_bind_dn'], $settings['ldap_bind_password']);
+                    if ($bind) {
+                        echo json_encode(['success' => true, 'message' => 'LDAP connection and bind successful']);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'LDAP bind failed: ' . ldap_error($ldap)]);
+                    }
+                } else {
+                    echo json_encode(['success' => true, 'message' => 'LDAP server reachable (anonymous)']);
+                }
+                ldap_close($ldap);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to connect to LDAP server']);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'LDAP error: ' . $e->getMessage()]);
+        }
+    }
+
+    public function testSms(): void {
+        header('Content-Type: application/json');
+        $settings = $this->getIntegrationSettings();
+
+        if (empty($settings['sms_api_key'])) {
+            echo json_encode(['success' => false, 'message' => 'SMS API key not configured']);
+            return;
+        }
+
+        // Placeholder - actual SMS sending would depend on provider
+        echo json_encode(['success' => true, 'message' => 'SMS configuration appears valid. Actual sending requires provider integration.']);
+    }
+
+    public function testOpenai(): void {
+        header('Content-Type: application/json');
+        $settings = $this->getIntegrationSettings();
+
+        if (empty($settings['openai_api_key'])) {
+            echo json_encode(['success' => false, 'message' => 'OpenAI API key not configured']);
+            return;
+        }
+
+        try {
+            $ch = curl_init('https://api.openai.com/v1/models');
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Bearer ' . $settings['openai_api_key'],
+                    'Content-Type: application/json'
+                ],
+                CURLOPT_TIMEOUT => 10
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode === 200) {
+                echo json_encode(['success' => true, 'message' => 'OpenAI API connection successful']);
+            } elseif ($httpCode === 401) {
+                echo json_encode(['success' => false, 'message' => 'Invalid API key']);
+            } else {
+                echo json_encode(['success' => false, 'message' => "API returned HTTP $httpCode"]);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Connection error: ' . $e->getMessage()]);
+        }
+    }
+
+    private function getIntegrationSettings(): array {
+        $configFile = ROOT_PATH . '/config/integrations.json';
+
+        $defaults = [
+            'smtp_host' => '',
+            'smtp_port' => '587',
+            'smtp_username' => '',
+            'smtp_password' => '',
+            'smtp_from_email' => '',
+            'smtp_from_name' => 'SDBIP System',
+            'smtp_encryption' => 'tls',
+            'ldap_enabled' => false,
+            'ldap_host' => '',
+            'ldap_port' => '389',
+            'ldap_base_dn' => '',
+            'ldap_bind_dn' => '',
+            'ldap_bind_password' => '',
+            'ldap_user_filter' => '(sAMAccountName=%s)',
+            'sms_enabled' => false,
+            'sms_provider' => '',
+            'sms_api_key' => '',
+            'sms_api_secret' => '',
+            'sms_sender_id' => '',
+            'sms_api_url' => '',
+            'sms_notify_deadlines' => true,
+            'sms_notify_approvals' => true,
+            'sms_notify_alerts' => true,
+            'sms_notify_imbizo' => false,
+            'openai_api_key' => defined('OPENAI_API_KEY') ? OPENAI_API_KEY : '',
+            'openai_model' => 'gpt-4',
+            'openai_max_tokens' => 4000,
+            'openai_temperature' => 0.7,
+            'ai_quarterly_reports' => true,
+            'ai_recommendations' => true,
+            'ai_risk_analysis' => true,
+            'ai_trend_detection' => true
+        ];
+
+        if (file_exists($configFile)) {
+            $saved = json_decode(file_get_contents($configFile), true);
+            return array_merge($defaults, $saved ?? []);
+        }
+
+        return $defaults;
+    }
+
+    private function saveIntegrationSettings(array $settings): void {
+        $configDir = ROOT_PATH . '/config';
+        if (!is_dir($configDir)) {
+            mkdir($configDir, 0755, true);
+        }
+
+        $configFile = $configDir . '/integrations.json';
+        file_put_contents($configFile, json_encode($settings, JSON_PRETTY_PRINT));
     }
 
     private function getModuleStatus(): array {
