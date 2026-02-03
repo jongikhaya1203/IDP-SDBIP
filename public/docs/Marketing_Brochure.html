@@ -137,11 +137,7 @@
             color: #94a3b8;
         }
 
-        /* Feature Page */
-        .features-page {
-            background: #ffffff;
-            padding: 50px;
-        }
+        /* Section Header */
         .section-header {
             text-align: center;
             margin-bottom: 40px;
@@ -154,6 +150,175 @@
         .section-header p {
             color: #64748b;
             font-size: 1.1em;
+        }
+
+        /* Module Showcase Pages */
+        .module-showcase {
+            background: #f8fafc;
+            padding: 40px;
+        }
+        .module-showcase .section-header h2 {
+            color: #1e293b;
+        }
+        .screenshot-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .screenshot-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .screenshot-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .screenshot-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .screenshot-dots span:nth-child(1) { background: #ef4444; }
+        .screenshot-dots span:nth-child(2) { background: #eab308; }
+        .screenshot-dots span:nth-child(3) { background: #22c55e; }
+        .screenshot-title {
+            color: #94a3b8;
+            font-size: 0.85em;
+            flex: 1;
+            text-align: center;
+        }
+        .screenshot-body {
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        /* Mock UI Components */
+        .mock-sidebar {
+            width: 200px;
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .mock-nav-item {
+            padding: 10px 15px;
+            color: #94a3b8;
+            font-size: 0.85em;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mock-nav-item.active {
+            background: #2563eb;
+            color: white;
+        }
+        .mock-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        .mock-card-header {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mock-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8em;
+        }
+        .mock-table th {
+            background: #f1f5f9;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+        }
+        .mock-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+        .mock-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        .mock-badge-success { background: #dcfce7; color: #166534; }
+        .mock-badge-warning { background: #fef3c7; color: #92400e; }
+        .mock-badge-danger { background: #fee2e2; color: #991b1b; }
+        .mock-badge-info { background: #dbeafe; color: #1e40af; }
+        .mock-badge-primary { background: #2563eb; color: white; }
+        .mock-progress {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .mock-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .mock-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        .mock-btn-primary { background: #2563eb; color: white; }
+        .mock-btn-outline { background: transparent; border: 1px solid #e2e8f0; color: #64748b; }
+        .mock-stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .mock-stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .mock-stat-label {
+            font-size: 0.75em;
+            color: #64748b;
+        }
+        .mock-chart {
+            height: 120px;
+            background: linear-gradient(180deg, rgba(37,99,235,0.1) 0%, transparent 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            gap: 8px;
+        }
+        .mock-chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 4px 4px 0 0;
+        }
+
+        /* Features Page */
+        .features-page {
+            background: #ffffff;
+            padding: 50px;
         }
         .features-grid {
             display: grid;
@@ -501,7 +666,7 @@
             <div style="color: #94a3b8;">v2.0 | 2026</div>
         </div>
         <div class="cover-main">
-            <h1>Transform Your <span class="highlight">Business</span><br>Performance Management</h1>
+            <h1>Transform Your <span class="highlight">Municipal</span><br>Performance Management</h1>
             <p>BizSync360 - A comprehensive web-based solution for managing SDBIP & IDP processes, ensuring compliance, and driving service delivery excellence.</p>
         </div>
         <div class="cover-footer">
@@ -520,6 +685,558 @@
             <div class="cover-stat">
                 <div class="number">24/7</div>
                 <div class="label">Support</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IDP Module Showcase -->
+    <div class="page module-showcase">
+        <div class="section-header">
+            <h2>📋 IDP Strategic Management Module</h2>
+            <p>Align your municipality's strategic objectives with national and provincial development priorities</p>
+        </div>
+        <div class="screenshot-container">
+            <div class="screenshot-header">
+                <div class="screenshot-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="screenshot-title">BizSync360 - IDP Strategic Objectives | Sample Municipality</div>
+            </div>
+            <div class="screenshot-body">
+                <div style="display: flex; gap: 20px;">
+                    <div class="mock-sidebar">
+                        <div class="mock-nav-item">📊 Dashboard</div>
+                        <div class="mock-nav-item active">📋 IDP Objectives</div>
+                        <div class="mock-nav-item">🎯 SDBIP & KPIs</div>
+                        <div class="mock-nav-item">✅ Assessment</div>
+                        <div class="mock-nav-item">💰 Budget</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;">
+                            <div class="mock-stat-card">
+                                <div class="mock-stat-number" style="color: #2563eb;">12</div>
+                                <div class="mock-stat-label">Strategic Objectives</div>
+                            </div>
+                            <div class="mock-stat-card">
+                                <div class="mock-stat-number" style="color: #10b981;">8</div>
+                                <div class="mock-stat-label">On Track</div>
+                            </div>
+                            <div class="mock-stat-card">
+                                <div class="mock-stat-number" style="color: #f59e0b;">3</div>
+                                <div class="mock-stat-label">At Risk</div>
+                            </div>
+                            <div class="mock-stat-card">
+                                <div class="mock-stat-number" style="color: #ef4444;">1</div>
+                                <div class="mock-stat-label">Behind</div>
+                            </div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="mock-card-header">
+                                IDP Strategic Objectives - FY 2025/26
+                                <span class="mock-btn mock-btn-primary">+ Add Objective</span>
+                            </div>
+                            <table class="mock-table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Strategic Objective</th>
+                                        <th>National Priority</th>
+                                        <th>KPIs</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>SO-01</strong></td>
+                                        <td>Improved Water Service Delivery</td>
+                                        <td>Basic Services</td>
+                                        <td>15</td>
+                                        <td>
+                                            <div class="mock-progress"><div class="mock-progress-bar" style="width: 85%; background: #10b981;"></div></div>
+                                        </td>
+                                        <td><span class="mock-badge mock-badge-success">On Track</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SO-02</strong></td>
+                                        <td>Enhanced Road Infrastructure</td>
+                                        <td>Economic Growth</td>
+                                        <td>12</td>
+                                        <td>
+                                            <div class="mock-progress"><div class="mock-progress-bar" style="width: 72%; background: #10b981;"></div></div>
+                                        </td>
+                                        <td><span class="mock-badge mock-badge-success">On Track</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SO-03</strong></td>
+                                        <td>Youth Employment Programme</td>
+                                        <td>Job Creation</td>
+                                        <td>8</td>
+                                        <td>
+                                            <div class="mock-progress"><div class="mock-progress-bar" style="width: 45%; background: #f59e0b;"></div></div>
+                                        </td>
+                                        <td><span class="mock-badge mock-badge-warning">At Risk</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SO-04</strong></td>
+                                        <td>Clean Audit Achievement</td>
+                                        <td>Good Governance</td>
+                                        <td>10</td>
+                                        <td>
+                                            <div class="mock-progress"><div class="mock-progress-bar" style="width: 90%; background: #10b981;"></div></div>
+                                        </td>
+                                        <td><span class="mock-badge mock-badge-success">On Track</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SO-05</strong></td>
+                                        <td>Electricity Infrastructure Upgrade</td>
+                                        <td>Energy Security</td>
+                                        <td>6</td>
+                                        <td>
+                                            <div class="mock-progress"><div class="mock-progress-bar" style="width: 30%; background: #ef4444;"></div></div>
+                                        </td>
+                                        <td><span class="mock-badge mock-badge-danger">Behind</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div class="mock-card">
+                <div class="mock-card-header">Key Features</div>
+                <ul style="font-size: 0.85em; color: #64748b; padding-left: 20px;">
+                    <li>Align with NDP priorities</li>
+                    <li>Cascading objectives</li>
+                    <li>Progress tracking</li>
+                    <li>Historical comparison</li>
+                </ul>
+            </div>
+            <div class="mock-card">
+                <div class="mock-card-header">Integration</div>
+                <ul style="font-size: 0.85em; color: #64748b; padding-left: 20px;">
+                    <li>Links to SDBIP KPIs</li>
+                    <li>Budget alignment</li>
+                    <li>Provincial reporting</li>
+                    <li>MFMA compliance</li>
+                </ul>
+            </div>
+            <div class="mock-card">
+                <div class="mock-card-header">Benefits</div>
+                <ul style="font-size: 0.85em; color: #64748b; padding-left: 20px;">
+                    <li>Strategic visibility</li>
+                    <li>Performance insights</li>
+                    <li>Audit readiness</li>
+                    <li>Decision support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDBIP Module Showcase -->
+    <div class="page module-showcase" style="background: white;">
+        <div class="section-header">
+            <h2>🎯 SDBIP & KPI Management Module</h2>
+            <p>Comprehensive KPI tracking with quarterly assessments and performance ratings</p>
+        </div>
+        <div class="screenshot-container">
+            <div class="screenshot-header">
+                <div class="screenshot-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="screenshot-title">BizSync360 - SDBIP KPI Dashboard | Q3 2025/26</div>
+            </div>
+            <div class="screenshot-body">
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 15px;">
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number">156</div>
+                        <div class="mock-stat-label">Total KPIs</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #10b981;">98</div>
+                        <div class="mock-stat-label">Achieved</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #f59e0b;">35</div>
+                        <div class="mock-stat-label">Partial</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #ef4444;">23</div>
+                        <div class="mock-stat-label">Not Achieved</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #2563eb;">3.7</div>
+                        <div class="mock-stat-label">Avg Rating</div>
+                    </div>
+                </div>
+                <div class="mock-card">
+                    <div class="mock-card-header">
+                        KPI Performance - Infrastructure & Technical Services
+                        <div>
+                            <span class="mock-btn mock-btn-outline">Export</span>
+                            <span class="mock-btn mock-btn-primary">+ New KPI</span>
+                        </div>
+                    </div>
+                    <table class="mock-table">
+                        <thead>
+                            <tr>
+                                <th>KPI Code</th>
+                                <th>Indicator</th>
+                                <th>Target</th>
+                                <th>Actual</th>
+                                <th>Variance</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ITS-001</strong></td>
+                                <td>Water losses reduced</td>
+                                <td>25%</td>
+                                <td>22%</td>
+                                <td style="color: #10b981;">+12%</td>
+                                <td>⭐⭐⭐⭐⭐</td>
+                                <td><span class="mock-badge mock-badge-success">Achieved</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ITS-002</strong></td>
+                                <td>Potholes repaired within 48hrs</td>
+                                <td>90%</td>
+                                <td>87%</td>
+                                <td style="color: #f59e0b;">-3%</td>
+                                <td>⭐⭐⭐⭐</td>
+                                <td><span class="mock-badge mock-badge-warning">Partial</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ITS-003</strong></td>
+                                <td>Electricity connections installed</td>
+                                <td>500</td>
+                                <td>523</td>
+                                <td style="color: #10b981;">+4.6%</td>
+                                <td>⭐⭐⭐⭐⭐</td>
+                                <td><span class="mock-badge mock-badge-success">Achieved</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ITS-004</strong></td>
+                                <td>Refuse collection rate</td>
+                                <td>95%</td>
+                                <td>78%</td>
+                                <td style="color: #ef4444;">-17.9%</td>
+                                <td>⭐⭐</td>
+                                <td><span class="mock-badge mock-badge-danger">Not Achieved</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ITS-005</strong></td>
+                                <td>Street lights operational</td>
+                                <td>85%</td>
+                                <td>91%</td>
+                                <td style="color: #10b981;">+7.1%</td>
+                                <td>⭐⭐⭐⭐⭐</td>
+                                <td><span class="mock-badge mock-badge-success">Achieved</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div class="mock-card" style="flex: 1;">
+                        <div class="mock-card-header">Performance Trend</div>
+                        <div class="mock-chart">
+                            <div class="mock-chart-bar" style="height: 60%;"></div>
+                            <div class="mock-chart-bar" style="height: 75%;"></div>
+                            <div class="mock-chart-bar" style="height: 65%;"></div>
+                            <div class="mock-chart-bar" style="height: 80%;"></div>
+                            <div class="mock-chart-bar" style="height: 85%;"></div>
+                            <div class="mock-chart-bar" style="height: 78%;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-around; font-size: 0.7em; color: #94a3b8; margin-top: 5px;">
+                            <span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span><span>Q1</span><span>Q2</span>
+                        </div>
+                    </div>
+                    <div class="mock-card" style="flex: 1;">
+                        <div class="mock-card-header">SLA Dependencies</div>
+                        <div style="font-size: 0.8em;">
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                <span>Budget Constraints</span>
+                                <span class="mock-badge mock-badge-info">23 KPIs</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                <span>HR Vacancies</span>
+                                <span class="mock-badge mock-badge-warning">15 KPIs</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                                <span>Internal Controls</span>
+                                <span class="mock-badge mock-badge-success">8 KPIs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mayoral Imbizo Showcase -->
+    <div class="page module-showcase">
+        <div class="section-header">
+            <h2>🎤 Mayoral Imbizo Module</h2>
+            <p>Engage with communities through live streaming, feedback collection, and action tracking</p>
+        </div>
+        <div class="screenshot-container">
+            <div class="screenshot-header">
+                <div class="screenshot-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="screenshot-title">BizSync360 - Mayoral Imbizo Dashboard | Ward 15 Community Meeting</div>
+            </div>
+            <div class="screenshot-body">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                    <div>
+                        <div class="mock-card">
+                            <div class="mock-card-header">
+                                🔴 Live Session - Ward 15 Community Imbizo
+                                <span class="mock-badge mock-badge-danger">LIVE</span>
+                            </div>
+                            <div style="background: #1e293b; border-radius: 8px; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <div style="text-align: center; color: white;">
+                                    <div style="font-size: 3em; margin-bottom: 10px;">🎥</div>
+                                    <div style="font-size: 0.9em; color: #94a3b8;">Multi-platform Streaming Active</div>
+                                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                                        <span class="mock-badge" style="background: #ff0000; color: white;">YouTube</span>
+                                        <span class="mock-badge" style="background: #1877f2; color: white;">Facebook</span>
+                                        <span class="mock-badge" style="background: #1da1f2; color: white;">Twitter</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                                <div class="mock-stat-card">
+                                    <div class="mock-stat-number" style="color: #ef4444;">1,247</div>
+                                    <div class="mock-stat-label">Live Viewers</div>
+                                </div>
+                                <div class="mock-stat-card">
+                                    <div class="mock-stat-number">156</div>
+                                    <div class="mock-stat-label">Questions</div>
+                                </div>
+                                <div class="mock-stat-card">
+                                    <div class="mock-stat-number">89</div>
+                                    <div class="mock-stat-label">Complaints</div>
+                                </div>
+                                <div class="mock-stat-card">
+                                    <div class="mock-stat-number">45</div>
+                                    <div class="mock-stat-label">Action Items</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="mock-card-header">Recent Community Submissions</div>
+                            <div style="font-size: 0.85em;">
+                                <div style="padding: 10px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 10px;">
+                                    <span class="mock-badge mock-badge-danger">Urgent</span>
+                                    <div>
+                                        <strong>Burst water pipe on Main Street</strong>
+                                        <div style="color: #64748b; font-size: 0.9em;">Submitted by: Maria N. • Ward 15 • 2 mins ago</div>
+                                    </div>
+                                </div>
+                                <div style="padding: 10px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 10px;">
+                                    <span class="mock-badge mock-badge-warning">Medium</span>
+                                    <div>
+                                        <strong>Street lights not working in Zone 3</strong>
+                                        <div style="color: #64748b; font-size: 0.9em;">Submitted by: John M. • Ward 15 • 5 mins ago</div>
+                                    </div>
+                                </div>
+                                <div style="padding: 10px; display: flex; gap: 10px;">
+                                    <span class="mock-badge mock-badge-info">Question</span>
+                                    <div>
+                                        <strong>When will the new clinic be operational?</strong>
+                                        <div style="color: #64748b; font-size: 0.9em;">Submitted by: Sarah K. • Ward 15 • 8 mins ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mock-card">
+                            <div class="mock-card-header">Session Details</div>
+                            <div style="font-size: 0.85em; color: #64748b;">
+                                <p><strong>Date:</strong> 15 Jan 2026</p>
+                                <p><strong>Time:</strong> 10:00 - 13:00</p>
+                                <p><strong>Venue:</strong> Ward 15 Community Hall</p>
+                                <p><strong>Mayor:</strong> Hon. M. Dlamini</p>
+                                <p><strong>Attendance:</strong> 342 residents</p>
+                            </div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="mock-card-header">AI Meeting Minutes</div>
+                            <div style="font-size: 0.8em; color: #64748b; background: #f8fafc; padding: 10px; border-radius: 6px;">
+                                <p style="margin-bottom: 8px;">🤖 <strong>Auto-generated summary:</strong></p>
+                                <p>The Mayor addressed 45 community concerns including water supply issues (12), electricity (8), roads (15), and housing (10). Key commitments made...</p>
+                                <span class="mock-btn mock-btn-outline" style="margin-top: 8px; display: inline-block;">View Full Minutes</span>
+                            </div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="mock-card-header">Action Tracking</div>
+                            <div style="font-size: 0.8em;">
+                                <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                                    <span>Assigned</span>
+                                    <span class="mock-badge mock-badge-info">23</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                                    <span>In Progress</span>
+                                    <span class="mock-badge mock-badge-warning">15</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                                    <span>Completed</span>
+                                    <span class="mock-badge mock-badge-success">7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lekgotla Module Showcase -->
+    <div class="page module-showcase" style="background: white;">
+        <div class="section-header">
+            <h2>🏛️ Lekgotla Priority Management Module</h2>
+            <p>Strategic priority changes, mid-year adjustments, and executive decision tracking</p>
+        </div>
+        <div class="screenshot-container">
+            <div class="screenshot-header">
+                <div class="screenshot-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="screenshot-title">BizSync360 - Lekgotla Session Management | FY 2025/26 Mid-Year Review</div>
+            </div>
+            <div class="screenshot-body">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;">
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #8b5cf6;">4</div>
+                        <div class="mock-stat-label">Sessions This Year</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #2563eb;">28</div>
+                        <div class="mock-stat-label">Resolutions</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #10b981;">19</div>
+                        <div class="mock-stat-label">Implemented</div>
+                    </div>
+                    <div class="mock-stat-card">
+                        <div class="mock-stat-number" style="color: #f59e0b;">9</div>
+                        <div class="mock-stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="mock-card">
+                    <div class="mock-card-header">
+                        Recent Lekgotla Sessions
+                        <span class="mock-btn mock-btn-primary">+ New Session</span>
+                    </div>
+                    <table class="mock-table">
+                        <thead>
+                            <tr>
+                                <th>Session</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Resolutions</th>
+                                <th>Implementation</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mid-Year Budget Review</strong></td>
+                                <td>15 Jan 2026</td>
+                                <td><span class="mock-badge mock-badge-primary">Budget</span></td>
+                                <td>8</td>
+                                <td>
+                                    <div class="mock-progress"><div class="mock-progress-bar" style="width: 25%; background: #f59e0b;"></div></div>
+                                </td>
+                                <td><span class="mock-badge mock-badge-warning">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Strategic Priority Adjustment</strong></td>
+                                <td>10 Dec 2025</td>
+                                <td><span class="mock-badge mock-badge-info">Strategy</span></td>
+                                <td>5</td>
+                                <td>
+                                    <div class="mock-progress"><div class="mock-progress-bar" style="width: 80%; background: #10b981;"></div></div>
+                                </td>
+                                <td><span class="mock-badge mock-badge-success">Mostly Done</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emergency Infrastructure</strong></td>
+                                <td>22 Nov 2025</td>
+                                <td><span class="mock-badge mock-badge-danger">Emergency</span></td>
+                                <td>3</td>
+                                <td>
+                                    <div class="mock-progress"><div class="mock-progress-bar" style="width: 100%; background: #10b981;"></div></div>
+                                </td>
+                                <td><span class="mock-badge mock-badge-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Annual Planning Session</strong></td>
+                                <td>15 Jul 2025</td>
+                                <td><span class="mock-badge mock-badge-primary">Planning</span></td>
+                                <td>12</td>
+                                <td>
+                                    <div class="mock-progress"><div class="mock-progress-bar" style="width: 100%; background: #10b981;"></div></div>
+                                </td>
+                                <td><span class="mock-badge mock-badge-success">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="mock-card">
+                        <div class="mock-card-header">Latest Session: Mid-Year Budget Review</div>
+                        <div style="font-size: 0.85em;">
+                            <div style="margin-bottom: 10px;">
+                                <strong>Key Resolutions:</strong>
+                            </div>
+                            <div style="padding: 8px; background: #f8fafc; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #2563eb;">
+                                <strong>R001:</strong> Reallocate R15M from consultancy to infrastructure
+                                <span class="mock-badge mock-badge-warning" style="float: right;">Pending</span>
+                            </div>
+                            <div style="padding: 8px; background: #f8fafc; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #10b981;">
+                                <strong>R002:</strong> Fast-track water project procurement
+                                <span class="mock-badge mock-badge-success" style="float: right;">Done</span>
+                            </div>
+                            <div style="padding: 8px; background: #f8fafc; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                                <strong>R003:</strong> Establish emergency electricity fund
+                                <span class="mock-badge mock-badge-warning" style="float: right;">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-header">Attendees & Approvals</div>
+                        <div style="font-size: 0.85em;">
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                <div style="width: 35px; height: 35px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em;">MM</div>
+                                <div>
+                                    <strong>Municipal Manager</strong>
+                                    <div style="color: #10b981; font-size: 0.8em;">✓ Approved</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                <div style="width: 35px; height: 35px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em;">CFO</div>
+                                <div>
+                                    <strong>Chief Financial Officer</strong>
+                                    <div style="color: #10b981; font-size: 0.8em;">✓ Approved</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0;">
+                                <div style="width: 35px; height: 35px; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em;">DIR</div>
+                                <div>
+                                    <strong>Directors (5)</strong>
+                                    <div style="color: #10b981; font-size: 0.8em;">✓ All Approved</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -577,7 +1294,7 @@
     <!-- Benefits Page -->
     <div class="page benefits-page">
         <div class="section-header">
-            <h2>Why Choose Our Solution?</h2>
+            <h2>Why Choose BizSync360?</h2>
             <p>Delivering measurable value to municipalities across South Africa</p>
         </div>
         <div class="benefits-list">
@@ -835,8 +1552,8 @@
     <!-- Contact Page -->
     <div class="page contact-page">
         <img src="/uploads/cms/logo_1770053838.jpg" alt="BizSync360" style="height: 60px; border-radius: 12px; margin-bottom: 20px;" onerror="this.style.display='none'">
-        <h2>Ready to Transform Your Business?</h2>
-        <p>Join the growing number of organizations using BizSync360 to improve service delivery and achieve compliance excellence.</p>
+        <h2>Ready to Transform Your Municipality?</h2>
+        <p>Join the growing number of municipalities using BizSync360 to improve service delivery and achieve compliance excellence.</p>
         <a href="#" class="cta-btn">Request a Demo</a>
         <div class="contact-info">
             <div class="contact-item">
