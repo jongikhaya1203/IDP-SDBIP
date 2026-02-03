@@ -29,7 +29,7 @@
                 <?php endif; ?>
 
                 <div class="report-content">
-                    <?= \Parsedown::instance()->text($report['content']) ?? nl2br(e($report['content'])) ?>
+                    <?= parse_markdown($report['content']) ?>
                 </div>
             </div>
         </div>

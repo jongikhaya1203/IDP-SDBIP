@@ -307,6 +307,100 @@ function cms_settings(): array {
     return $settings;
 }
 
+/**
+ * Simple Markdown to HTML parser
+ * Handles basic markdown: headers, bold, italic, lists, tables, links, code blocks
+ */
+function parse_markdown(string $text): string {
+    $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+
+    // Code blocks (must be first to protect content)
+    $text = preg_replace('/```(\w*)\n(.*?)```/s', '<pre class="bg-light p-3 rounded"><code>$2</code></pre>', $text);
+    $text = preg_replace('/`([^`]+)`/', '<code class="bg-light px-1 rounded">$1</code>', $text);
+
+    // Headers
+    $text = preg_replace('/^###### (.+)$/m', '<h6>$1</h6>', $text);
+    $text = preg_replace('/^##### (.+)$/m', '<h5>$1</h5>', $text);
+    $text = preg_replace('/^#### (.+)$/m', '<h4>$1</h4>', $text);
+    $text = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $text);
+    $text = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $text);
+    $text = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $text);
+
+    // Bold and italic
+    $text = preg_replace('/\*\*\*(.+?)\*\*\*/', '<strong><em>$1</em></strong>', $text);
+    $text = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $text);
+    $text = preg_replace('/\*(.+?)\*/', '<em>$1</em>', $text);
+
+    // Horizontal rules
+    $text = preg_replace('/^---+$/m', '<hr>', $text);
+
+    // Tables
+    $text = preg_replace_callback('/(\|.+\|)\n(\|[-:\| ]+\|)\n((?:\|.+\|\n?)+)/m', function($matches) {
+        $headers = array_filter(array_map('trim', explode('|', $matches[1])));
+        $rows = array_filter(explode("\n", $matches[3]));
+
+        $html = '<div class="table-responsive"><table class="table table-bordered table-sm">';
+        $html .= '<thead class="table-light"><tr>';
+        foreach ($headers as $header) {
+            $html .= '<th>' . $header . '</th>';
+        }
+        $html .= '</tr></thead><tbody>';
+
+        foreach ($rows as $row) {
+            if (trim($row)) {
+                $cells = array_filter(array_map('trim', explode('|', $row)));
+                $html .= '<tr>';
+                foreach ($cells as $cell) {
+                    $html .= '<td>' . $cell . '</td>';
+                }
+                $html .= '</tr>';
+            }
+        }
+        $html .= '</tbody></table></div>';
+        return $html;
+    }, $text);
+
+    // Unordered lists
+    $text = preg_replace_callback('/(?:^[-*] .+$\n?)+/m', function($matches) {
+        $items = preg_split('/^[-*] /m', $matches[0], -1, PREG_SPLIT_NO_EMPTY);
+        $html = '<ul class="mb-3">';
+        foreach ($items as $item) {
+            $html .= '<li>' . trim($item) . '</li>';
+        }
+        $html .= '</ul>';
+        return $html;
+    }, $text);
+
+    // Ordered lists
+    $text = preg_replace_callback('/(?:^\d+\. .+$\n?)+/m', function($matches) {
+        $items = preg_split('/^\d+\. /m', $matches[0], -1, PREG_SPLIT_NO_EMPTY);
+        $html = '<ol class="mb-3">';
+        foreach ($items as $item) {
+            $html .= '<li>' . trim($item) . '</li>';
+        }
+        $html .= '</ol>';
+        return $html;
+    }, $text);
+
+    // Blockquotes
+    $text = preg_replace('/^&gt; (.+)$/m', '<blockquote class="border-start border-4 border-primary ps-3 text-muted">$1</blockquote>', $text);
+
+    // Links
+    $text = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2" target="_blank">$1</a>', $text);
+
+    // Warning/Info boxes (custom)
+    $text = preg_replace('/⚠️ \*\*(.+?):\*\* (.+)$/m', '<div class="alert alert-warning"><strong>$1:</strong> $2</div>', $text);
+
+    // Paragraphs - wrap remaining text blocks
+    $text = preg_replace('/^(?!<[a-z]|$)(.+)$/m', '<p>$1</p>', $text);
+
+    // Clean up empty paragraphs and excessive whitespace
+    $text = preg_replace('/<p>\s*<\/p>/', '', $text);
+    $text = preg_replace('/\n{3,}/', "\n\n", $text);
+
+    return $text;
+}
+
 // Autoloader for classes
 spl_autoload_register(function ($class) {
     $paths = [
