@@ -178,10 +178,10 @@ class AIReportController {
         $db = db();
 
         $dirFilter = $directorateId ? 'AND k.directorate_id = ?' : '';
-        $params = [$fyId, $quarter];
-        if ($directorateId) {
-            $params[] = $directorateId;
-        }
+        // Base params for JOIN conditions: financial_year_id, quarter
+        $baseParams = [$fyId, $quarter];
+        // Params for WHERE clause financial_year_id + optional directorate filter
+        $whereParams = $directorateId ? [$fyId, $directorateId] : [$fyId];
 
         // Overall statistics
         $stats = $db->fetch("
@@ -197,7 +197,7 @@ class AIReportController {
             JOIN idp_strategic_objectives so ON so.id = k.strategic_objective_id
             LEFT JOIN kpi_quarterly_actuals qa ON qa.kpi_id = k.id AND qa.financial_year_id = ? AND qa.quarter = ?
             WHERE so.financial_year_id = ? AND k.is_active = 1 {$dirFilter}
-        ", array_merge($params, [$fyId], $directorateId ? [$directorateId] : []));
+        ", array_merge($baseParams, $whereParams));
 
         // Directorate breakdown
         $directorates = $db->fetchAll("
@@ -225,7 +225,7 @@ class AIReportController {
             LEFT JOIN kpi_quarterly_actuals qa ON qa.kpi_id = k.id AND qa.financial_year_id = ? AND qa.quarter = ?
             WHERE so.financial_year_id = ? AND k.is_active = 1 {$dirFilter}
             GROUP BY k.sla_category
-        ", array_merge($params, [$fyId], $directorateId ? [$directorateId] : []));
+        ", array_merge($baseParams, $whereParams));
 
         // Underperforming KPIs
         $underperforming = $db->fetchAll("
@@ -237,7 +237,7 @@ class AIReportController {
             WHERE so.financial_year_id = ? AND k.is_active = 1 AND qa.achievement_status = 'not_achieved' {$dirFilter}
             ORDER BY qa.variance ASC
             LIMIT 10
-        ", array_merge($params, [$fyId], $directorateId ? [$directorateId] : []));
+        ", array_merge($baseParams, $whereParams));
 
         // Top performers
         $topPerformers = $db->fetchAll("
@@ -249,7 +249,7 @@ class AIReportController {
             WHERE so.financial_year_id = ? AND k.is_active = 1 AND qa.aggregated_rating >= 4 {$dirFilter}
             ORDER BY qa.aggregated_rating DESC
             LIMIT 10
-        ", array_merge($params, [$fyId], $directorateId ? [$directorateId] : []));
+        ", array_merge($baseParams, $whereParams));
 
         // Budget data
         $budget = $db->fetch("

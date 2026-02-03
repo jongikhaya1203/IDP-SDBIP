@@ -186,7 +186,7 @@ class AdminController {
         $db = db();
 
         // Don't allow deleting yourself
-        if ($id == current_user()['id']) {
+        if ($id == user()['id']) {
             flash('error', 'You cannot delete your own account.');
             redirect('/admin/users');
             return;

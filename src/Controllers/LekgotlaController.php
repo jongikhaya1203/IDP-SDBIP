@@ -166,7 +166,7 @@ class LekgotlaController
             $_POST['venue'],
             $_POST['presided_by'] ?? 'Municipal Mayor',
             $_POST['linked_imbizo_id'] ?: null,
-            $_SESSION['user_id']
+            user()['id']
         ]);
 
         $sessionId = $this->db->lastInsertId();
@@ -319,7 +319,7 @@ class LekgotlaController
             'linked_imbizo_action_id' => $_POST['linked_imbizo_action_id'] ?: null,
             'change_reason' => $_POST['change_reason'],
             'community_impact' => $_POST['community_impact'] ?? null,
-            'proposed_by' => $_SESSION['user_id'],
+            'proposed_by' => user()['id'],
             'status' => 'proposed'
         ];
 
@@ -391,7 +391,7 @@ class LekgotlaController
                 UPDATE lekgotla_sessions
                 SET status = 'approved', approved_by = ?, approved_at = NOW(), resolution_number = ?
                 WHERE id = ?
-            ", [$_SESSION['user_id'], $_POST['resolution_number'], $sessionId]);
+            ", [user()['id'], $_POST['resolution_number'], $sessionId]);
 
             // Create post-lekgotla snapshot
             $this->createSnapshot($session['financial_year_id'], 'post_lekgotla', $sessionId);
@@ -431,27 +431,27 @@ class LekgotlaController
                     $change['lekgotla_session_id'],
                     $change['new_priority_level'],
                     $change['new_budget'] ?? 0,
-                    $_SESSION['user_id']
+                    user()['id']
                 ]);
                 break;
 
             case 'discard':
                 $this->db->query("
                     UPDATE idp_priorities SET status = 'discarded', last_modified_by = ? WHERE id = ?
-                ", [$_SESSION['user_id'], $change['priority_id']]);
+                ", [user()['id'], $change['priority_id']]);
                 break;
 
             case 'defer':
                 $this->db->query("
                     UPDATE idp_priorities SET status = 'deferred', last_modified_by = ? WHERE id = ?
-                ", [$_SESSION['user_id'], $change['priority_id']]);
+                ", [user()['id'], $change['priority_id']]);
                 break;
 
             case 'modify':
                 if ($change['new_budget']) {
                     $this->db->query("
                         UPDATE idp_priorities SET budget_allocated = ?, last_modified_by = ? WHERE id = ?
-                    ", [$change['new_budget'], $_SESSION['user_id'], $change['priority_id']]);
+                    ", [$change['new_budget'], user()['id'], $change['priority_id']]);
                 }
                 break;
         }
@@ -499,7 +499,7 @@ class LekgotlaController
             $stats['at_risk'],
             $stats['completed'],
             $stats['discarded'],
-            $_SESSION['user_id']
+            user()['id']
         ]);
     }
 
@@ -635,11 +635,11 @@ class LekgotlaController
             WHERE id = ?
         ", [
             $status,
-            $_SESSION['user_id'],
+            user()['id'],
             $_POST['review_comments'] ?? null,
             $status,
             $status,
-            $_SESSION['user_id'],
+            user()['id'],
             $changeId
         ]);
 
